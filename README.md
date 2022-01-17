@@ -587,6 +587,7 @@ data_sources:
 - [Apache Ignite](#apache-ignite)
 - [Apache Spark](#apache-spark)
 - [Cassandra](#cassandra)
+- [ClickHouse](#clickhouse)
 - [Druid](#druid)
 - [Elasticsearch](#elasticsearch)
 - [Google BigQuery](#google-bigquery)
@@ -741,6 +742,17 @@ data_sources:
 ```
 
 Use a [read-only role](https://docs.datastax.com/en/cql-oss/3.3/cql/cql_using/useSecurePermission.html).
+
+### ClickHouse
+
+Add [ClickHouse Ruby driver](https://github.com/shlima/click_house) to your Gemfile and set:
+```yml
+data_sources:
+  my_source:
+    adapter: clickhouse
+    url: http://user:password@hostname:8123/database
+```
+>>>>>>> 41a6b49 (Added support for ClickHouse)
 
 ### Druid
 
