@@ -1,10 +1,10 @@
 require_relative "lib/blazer/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "blazer"
+  spec.name          = "finery"
   spec.version       = Blazer::VERSION
-  spec.summary       = "Explore your data with SQL. Easily create charts and dashboards, and share them with your team."
-  spec.homepage      = "https://github.com/ankane/blazer"
+  spec.summary       = "Explore your data with SQL. Easily create charts and dashboards, and share them with your team. A drop-in replacement for Blazer."
+  spec.homepage      = "https://github.com/finery-bi/finery"
   spec.license       = "MIT"
 
   spec.author        = "Andrew Kane"

@@ -2,6 +2,13 @@
 
 First, thanks for wanting to contribute. You’re awesome! :heart:
 
+## Finery vs Blazer
+
+We accept PRs at Finery, but we also track Blazer's merged PRs. 
+
+Be aware that some of the features are only available in Finery, so they
+might not work for Blazer.
+
 ## Help
 
 We’re not able to provide support through GitHub Issues. If you’re looking for help with your code, try posting on [Stack Overflow](https://stackoverflow.com/).

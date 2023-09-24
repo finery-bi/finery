@@ -1,4 +1,4 @@
-# see https://github.com/ankane/blazer for more info
+# see https://github.com/finery-bi/finery for more info
 
 data_sources:
   main:
@@ -55,7 +55,7 @@ audit: true
 # before_action_method: require_admin
 
 # email to send checks from
-# from_email: blazer@example.org
+# from_email: finery@example.org
 
 # webhook for Slack
 # slack_webhook_url: <%%= ENV["BLAZER_SLACK_WEBHOOK_URL"] %>

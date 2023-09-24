@@ -11,7 +11,7 @@ module Blazer
       end
 
       def copy_config
-        template "config.yml", "config/blazer.yml"
+        template "config.yml", "config/finery.yml"
       end
 
       def migration_version

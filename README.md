@@ -1,16 +1,16 @@
-# Blazer
+# Finery
 
 Explore your data with SQL. Easily create charts and dashboards, and share them with your team.
 
-[Try it out](https://blazer.dokkuapp.com)
+[Try it out](https://finery.dokkuapp.com)
 
-[![Screenshot](https://blazer.dokkuapp.com/assets/blazer-a10baa40fef1ca2f5bb25fc97bcf261a6a54192fb1ad0f893c0f562b8c7c4697.png)](https://blazer.dokkuapp.com)
+[![Screenshot](https://finery.dokkuapp.com/assets/finery-a10baa40fef1ca2f5bb25fc97bcf261a6a54192fb1ad0f893c0f562b8c7c4697.png)](https://finery.dokkuapp.com)
 
-Blazer is also available as a [Docker image](https://github.com/ankane/blazer-docker).
+Finery is also available as a [Docker image](https://github.com/finery-bi/finery-docker).
 
 :tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
 
-[![Build Status](https://github.com/ankane/blazer/workflows/build/badge.svg?branch=master)](https://github.com/ankane/blazer/actions)
+[![Build Status](https://github.com/finery-bi/finery/workflows/build/badge.svg?branch=master)](https://github.com/finery-bi/finery/actions)
 
 ## Features
 
@@ -39,20 +39,20 @@ Blazer is also available as a [Docker image](https://github.com/ankane/blazer-do
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem "blazer"
+gem "finery"
 ```
 
 Run:
 
 ```sh
-rails generate blazer:install
+rails generate finery:install
 rails db:migrate
 ```
 
 And mount the dashboard in your `config/routes.rb`:
 
 ```ruby
-mount Blazer::Engine, at: "blazer"
+mount Finery::Engine, at: "finery"
 ```
 
 For production, specify your database:
@@ -61,37 +61,37 @@ For production, specify your database:
 ENV["BLAZER_DATABASE_URL"] = "postgres://user:password@hostname:5432/database"
 ```
 
-When possible, Blazer tries to protect against queries which modify data by running each query in a transaction and rolling it back, but a safer approach is to use a read-only user. [See how to create one](#permissions).
+When possible, Finery tries to protect against queries which modify data by running each query in a transaction and rolling it back, but a safer approach is to use a read-only user. [See how to create one](#permissions).
 
 #### Checks (optional)
 
 Be sure to set a host in `config/environments/production.rb` for emails to work.
 
 ```ruby
-config.action_mailer.default_url_options = {host: "blazer.dokkuapp.com"}
+config.action_mailer.default_url_options = {host: "finery.dokkuapp.com"}
 ```
 
 Schedule checks to run (with cron, [Heroku Scheduler](https://elements.heroku.com/addons/scheduler), etc). The default options are every 5 minutes, 1 hour, or 1 day, which you can customize. For each of these options, set up a task to run.
 
 ```sh
-rake blazer:run_checks SCHEDULE="5 minutes"
-rake blazer:run_checks SCHEDULE="1 hour"
-rake blazer:run_checks SCHEDULE="1 day"
+rake finery:run_checks SCHEDULE="5 minutes"
+rake finery:run_checks SCHEDULE="1 hour"
+rake finery:run_checks SCHEDULE="1 day"
 ```
 
 You can also set up failing checks to be sent once a day (or whatever you prefer).
 
 ```sh
-rake blazer:send_failing_checks
+rake finery:send_failing_checks
 ```
 
 Here’s what it looks like with cron.
 
 ```
-*/5 * * * * rake blazer:run_checks SCHEDULE="5 minutes"
-0   * * * * rake blazer:run_checks SCHEDULE="1 hour"
-30  7 * * * rake blazer:run_checks SCHEDULE="1 day"
-0   8 * * * rake blazer:send_failing_checks
+*/5 * * * * rake finery:run_checks SCHEDULE="5 minutes"
+0   * * * * rake finery:run_checks SCHEDULE="1 hour"
+30  7 * * * rake finery:run_checks SCHEDULE="1 day"
+0   8 * * * rake finery:send_failing_checks
 ```
 
 For Slack notifications, create an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) and set:
@@ -100,7 +100,7 @@ For Slack notifications, create an [incoming webhook](https://slack.com/apps/A0F
 BLAZER_SLACK_WEBHOOK_URL=https://hooks.slack.com/...
 ```
 
-Name the webhook “Blazer” and add a cool icon.
+Name the webhook “Finery” and add a cool icon.
 
 ## Authentication
 
@@ -119,13 +119,13 @@ ENV["BLAZER_PASSWORD"] = "secret"
 
 ```ruby
 authenticate :user, ->(user) { user.admin? } do
-  mount Blazer::Engine, at: "blazer"
+  mount Finery::Engine, at: "finery"
 end
 ```
 
 ### Other
 
-Specify a `before_action` method to run in `blazer.yml`.
+Specify a `before_action` method to run in `finery.yml`.
 
 ```yml
 before_action_method: require_admin
@@ -150,11 +150,11 @@ Create a user with read-only permissions:
 
 ```sql
 BEGIN;
-CREATE ROLE blazer LOGIN PASSWORD 'secret';
-GRANT CONNECT ON DATABASE dbname TO blazer;
-GRANT USAGE ON SCHEMA public TO blazer;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO blazer;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO blazer;
+CREATE ROLE finery LOGIN PASSWORD 'secret';
+GRANT CONNECT ON DATABASE dbname TO finery;
+GRANT USAGE ON SCHEMA public TO finery;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO finery;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO finery;
 COMMIT;
 ```
 
@@ -163,8 +163,8 @@ COMMIT;
 Create a user with read-only permissions:
 
 ```sql
-CREATE USER 'blazer'@'127.0.0.1' IDENTIFIED BY 'secret';
-GRANT SELECT, SHOW VIEW ON dbname.* TO 'blazer'@'127.0.0.1';
+CREATE USER 'finery'@'127.0.0.1' IDENTIFIED BY 'secret';
+GRANT SELECT, SHOW VIEW ON dbname.* TO 'finery'@'127.0.0.1';
 FLUSH PRIVILEGES;
 ```
 
@@ -176,10 +176,10 @@ If your database contains sensitive or personal data, check out [Hypershield](ht
 
 If you need to search encrypted data, use [blind indexing](https://github.com/ankane/blind_index).
 
-You can have Blazer transform specific variables with:
+You can have Finery transform specific variables with:
 
 ```ruby
-Blazer.transform_variable = lambda do |name, value|
+Finery.transform_variable = lambda do |name, value|
   value = User.generate_email_bidx(value) if name == "email_bidx"
   value
 end
@@ -195,7 +195,7 @@ Create queries with variables.
 SELECT * FROM users WHERE gender = {gender}
 ```
 
-Use `{start_time}` and `{end_time}` for time ranges. [Example](https://blazer.dokkuapp.com/queries/9-time-range-selector?start_time=1997-10-03T05%3A00%3A00%2B00%3A00&end_time=1997-10-04T04%3A59%3A59%2B00%3A00)
+Use `{start_time}` and `{end_time}` for time ranges. [Example](https://finery.dokkuapp.com/queries/9-time-range-selector?start_time=1997-10-03T05%3A00%3A00%2B00%3A00&end_time=1997-10-04T04%3A59%3A59%2B00%3A00)
 
 ```sql
 SELECT * FROM ratings WHERE rated_at >= {start_time} AND rated_at <= {end_time}
@@ -203,7 +203,7 @@ SELECT * FROM ratings WHERE rated_at >= {start_time} AND rated_at <= {end_time}
 
 ### Smart Variables
 
-[Example](https://blazer.dokkuapp.com/queries/1-smart-variable)
+[Example](https://finery.dokkuapp.com/queries/1-smart-variable)
 
 Suppose you have the query:
 
@@ -232,7 +232,7 @@ smart_variables:
 
 ### Linked Columns
 
-[Example](https://blazer.dokkuapp.com/queries/3-linked-column) - title column
+[Example](https://finery.dokkuapp.com/queries/3-linked-column) - title column
 
 Link results to other pages in your apps or around the web. Specify a column name and where it should link to. You can use the value of the result with `{value}`.
 
@@ -244,7 +244,7 @@ linked_columns:
 
 ### Smart Columns
 
-[Example](https://blazer.dokkuapp.com/queries/2-smart-column) - occupation_id column
+[Example](https://finery.dokkuapp.com/queries/2-smart-column) - occupation_id column
 
 Suppose you have the query:
 
@@ -294,7 +294,7 @@ Conditions for those queries are optional, but they will help to only fetch the 
 
 ### Caching
 
-Blazer can automatically cache results to improve speed. It can cache slow queries:
+Finery can automatically cache results to improve speed. It can cache slow queries:
 
 ```yml
 cache:
@@ -315,7 +315,7 @@ Of course, you can force a refresh at any time.
 
 ## Charts
 
-Blazer will automatically generate charts based on the types of the columns returned in your query.
+Finery will automatically generate charts based on the types of the columns returned in your query.
 
 **Note:** The order of columns matters.
 
@@ -323,13 +323,13 @@ Blazer will automatically generate charts based on the types of the columns retu
 
 There are two ways to generate line charts.
 
-2+ columns - timestamp, numeric(s) - [Example](https://blazer.dokkuapp.com/queries/4-line-chart-format-1)
+2+ columns - timestamp, numeric(s) - [Example](https://finery.dokkuapp.com/queries/4-line-chart-format-1)
 
 ```sql
 SELECT date_trunc('week', created_at), COUNT(*) FROM users GROUP BY 1
 ```
 
-3 columns - timestamp, string, numeric - [Example](https://blazer.dokkuapp.com/queries/5-line-chart-format-2)
+3 columns - timestamp, string, numeric - [Example](https://finery.dokkuapp.com/queries/5-line-chart-format-2)
 
 
 ```sql
@@ -340,13 +340,13 @@ SELECT date_trunc('week', created_at), gender, COUNT(*) FROM users GROUP BY 1, 2
 
 There are also two ways to generate column charts.
 
-2+ columns - string, numeric(s) - [Example](https://blazer.dokkuapp.com/queries/6-column-chart-format-1)
+2+ columns - string, numeric(s) - [Example](https://finery.dokkuapp.com/queries/6-column-chart-format-1)
 
 ```sql
 SELECT gender, COUNT(*) FROM users GROUP BY 1
 ```
 
-3 columns - string, string, numeric - [Example](https://blazer.dokkuapp.com/queries/7-column-chart-format-2)
+3 columns - string, string, numeric - [Example](https://finery.dokkuapp.com/queries/7-column-chart-format-2)
 
 ```sql
 SELECT gender, zip_code, COUNT(*) FROM users GROUP BY 1, 2
@@ -354,7 +354,7 @@ SELECT gender, zip_code, COUNT(*) FROM users GROUP BY 1, 2
 
 ### Scatter Chart
 
-2 columns - both numeric - [Example](https://blazer.dokkuapp.com/queries/16-scatter-chart)
+2 columns - both numeric - [Example](https://finery.dokkuapp.com/queries/16-scatter-chart)
 
 ```sql
 SELECT x, y FROM table
@@ -362,7 +362,7 @@ SELECT x, y FROM table
 
 ### Pie Chart
 
-2 columns - string, numeric - and last column named `pie` - [Example](https://blazer.dokkuapp.com/queries/17-pie-chart)
+2 columns - string, numeric - and last column named `pie` - [Example](https://finery.dokkuapp.com/queries/17-pie-chart)
 
 ```sql
 SELECT gender, COUNT(*) AS pie FROM users GROUP BY 1
@@ -370,7 +370,7 @@ SELECT gender, COUNT(*) AS pie FROM users GROUP BY 1
 
 ### Maps
 
-Columns named `latitude` and `longitude` or `lat` and `lon` or `lat` and `lng` - [Example](https://blazer.dokkuapp.com/queries/15-map)
+Columns named `latitude` and `longitude` or `lat` and `lon` or `lat` and `lng` - [Example](https://finery.dokkuapp.com/queries/15-map)
 
 ```sql
 SELECT name, latitude, longitude FROM cities
@@ -386,7 +386,7 @@ To enable, get an access token from [Mapbox](https://www.mapbox.com/) and set `E
 
 ### Targets
 
-Use the column name `target` to draw a line for goals. [Example](https://blazer.dokkuapp.com/queries/8-target-line)
+Use the column name `target` to draw a line for goals. [Example](https://finery.dokkuapp.com/queries/8-target-line)
 
 ```sql
 SELECT date_trunc('week', created_at), COUNT(*) AS new_users, 100000 AS target FROM users GROUP BY 1
@@ -394,7 +394,7 @@ SELECT date_trunc('week', created_at), COUNT(*) AS new_users, 100000 AS target F
 
 ## Dashboards
 
-Create a dashboard with multiple queries. [Example](https://blazer.dokkuapp.com/dashboards/1-dashboard-demo)
+Create a dashboard with multiple queries. [Example](https://finery.dokkuapp.com/dashboards/1-dashboard-demo)
 
 If the query has a chart, the chart is shown. Otherwise, you’ll see a table.
 
@@ -402,7 +402,7 @@ If any queries have variables, they will show up on the dashboard.
 
 ## Checks
 
-Checks give you a centralized place to see the health of your data. [Example](https://blazer.dokkuapp.com/checks)
+Checks give you a centralized place to see the health of your data. [Example](https://finery.dokkuapp.com/checks)
 
 Create a query to identify bad rows.
 
@@ -414,7 +414,7 @@ Then create check with optional emails if you want to be notified. Emails are se
 
 ## Cohorts
 
-Create a cohort analysis from a simple SQL query. [Example](https://blazer.dokkuapp.com/queries/19-cohort-analysis-from-first-order)
+Create a cohort analysis from a simple SQL query. [Example](https://finery.dokkuapp.com/queries/19-cohort-analysis-from-first-order)
 
 Create a query with the comment `/* cohort analysis */`. The result should have columns named `user_id` and `conversion_time` and optionally `cohort_time`.
 
@@ -439,7 +439,7 @@ This feature requires PostgreSQL or MySQL 8.
 
 ## Anomaly Detection
 
-Blazer supports three different approaches to anomaly detection.
+Finery supports three different approaches to anomaly detection.
 
 ### Prophet
 
@@ -449,7 +449,7 @@ Add [prophet-rb](https://github.com/ankane/prophet) to your Gemfile:
 gem "prophet-rb"
 ```
 
-And add to `config/blazer.yml`:
+And add to `config/finery.yml`:
 
 ```yml
 anomaly_checks: prophet
@@ -465,7 +465,7 @@ Add [trend](https://github.com/ankane/trend) to your Gemfile:
 gem "trend"
 ```
 
-And add to `config/blazer.yml`:
+And add to `config/finery.yml`:
 
 ```yml
 anomaly_checks: trend
@@ -485,7 +485,7 @@ Add [anomaly_detection](https://github.com/ankane/AnomalyDetection.rb) to your G
 gem "anomaly_detection"
 ```
 
-And add to `config/blazer.yml`:
+And add to `config/finery.yml`:
 
 ```yml
 anomaly_checks: anomaly_detection
@@ -493,7 +493,7 @@ anomaly_checks: anomaly_detection
 
 ## Forecasting
 
-Blazer supports for two different forecasting methods. [Example](https://blazer.dokkuapp.com/queries/18-forecast?forecast=t)
+Finery supports for two different forecasting methods. [Example](https://finery.dokkuapp.com/queries/18-forecast?forecast=t)
 
 A forecast link will appear for queries that return 2 columns with types timestamp and numeric.
 
@@ -505,7 +505,7 @@ Add [prophet-rb](https://github.com/ankane/prophet) to your Gemfile:
 gem "prophet-rb", ">= 0.2.1"
 ```
 
-And add to `config/blazer.yml`:
+And add to `config/finery.yml`:
 
 ```yml
 forecasting: prophet
@@ -521,7 +521,7 @@ Add [trend](https://github.com/ankane/trend) to your Gemfile:
 gem "trend"
 ```
 
-And add to `config/blazer.yml`:
+And add to `config/finery.yml`:
 
 ```yml
 forecasting: trend
@@ -535,16 +535,16 @@ Trend.url = "http://localhost:8000"
 
 ## Uploads
 
-Create database tables from CSV files. [Example](https://blazer.dokkuapp.com/uploads)
+Create database tables from CSV files. [Example](https://finery.dokkuapp.com/uploads)
 
 Run:
 
 ```sh
-rails generate blazer:uploads
+rails generate finery:uploads
 rails db:migrate
 ```
 
-And add to `config/blazer.yml`:
+And add to `config/finery.yml`:
 
 ```yml
 uploads:
@@ -561,9 +561,9 @@ CREATE SCHEMA uploads;
 
 ## Data Sources
 
-Blazer supports multiple data sources :tada:
+Finery supports multiple data sources :tada:
 
-Add additional data sources in `config/blazer.yml`:
+Add additional data sources in `config/finery.yml`:
 
 ```yml
 data_sources:
@@ -992,14 +992,14 @@ Use a [read-only user](https://docs.microsoft.com/en-us/sql/relational-databases
 Create an adapter for any data store with:
 
 ```ruby
-class FooAdapter < Blazer::Adapters::BaseAdapter
+class FooAdapter < Finery::Adapters::BaseAdapter
   # code goes here
 end
 
-Blazer.register_adapter "foo", FooAdapter
+Finery.register_adapter "foo", FooAdapter
 ```
 
-See the [Presto adapter](https://github.com/ankane/blazer/blob/master/lib/blazer/adapters/presto_adapter.rb) for a good example. Then use:
+See the [Presto adapter](https://github.com/finery-bi/finery/blob/master/lib/finery/adapters/presto_adapter.rb) for a good example. Then use:
 
 ```yml
 data_sources:
@@ -1010,7 +1010,7 @@ data_sources:
 
 ## Query Permissions
 
-Blazer supports a basic permissions model.
+Finery supports a basic permissions model.
 
 1. Queries without a name are unlisted
 2. Queries whose name starts with `#` are only listed to the creator
@@ -1029,7 +1029,7 @@ For an easy way to group by day, week, month, and more with correct time zones, 
 
 ## Standalone Version
 
-Looking for a standalone version? Check out [Ghost Blazer](https://github.com/buren/ghost_blazer).
+Looking for a standalone version? Check out [Ghost Finery](https://github.com/buren/ghost_finery).
 
 ## Performance
 
@@ -1050,18 +1050,20 @@ config.cache_store = :mem_cache_store
 Archive queries that haven’t been viewed in over 90 days.
 
 ```sh
-rake blazer:archive_queries
+rake finery:archive_queries
 ```
 
 ## Content Security Policy
 
-If views are stuck with a `Loading...` message, there might be a problem with strict CSP settings in your app. This can be checked with Firefox or Chrome dev tools. You can allow Blazer to override these settings for its controllers with:
+If views are stuck with a `Loading...` message, there might be a problem with strict CSP settings in your app. This can be checked with Firefox or Chrome dev tools. You can allow Finery to override these settings for its controllers with:
 
 ```yml
 override_csp: true
 ```
 
 ## Upgrading
+
+Note: Finery started as a fork of Blazer 3.0, so everything before that is strictly Blazer-only.
 
 ### 3.0
 
@@ -1072,7 +1074,7 @@ Maps now use Mapbox GL JS v1 instead of Mapbox.js, which affects Mapbox billing.
 Custom adapters now need to specify how to quote variables in queries (there is no longer a default)
 
 ```ruby
-class FooAdapter < Blazer::Adapters::BaseAdapter
+class FooAdapter < Finery::Adapters::BaseAdapter
   def quoting
     :backslash_escape # single quote strings and convert ' to \' and \ to \\
     # or
@@ -1088,14 +1090,14 @@ end
 To archive queries, create a migration
 
 ```sh
-rails g migration add_status_to_blazer_queries
+rails g migration add_status_to_finery_queries
 ```
 
 with:
 
 ```ruby
-add_column :blazer_queries, :status, :string
-Blazer::Query.update_all(status: "active")
+add_column :finery_queries, :status, :string
+Finery::Query.update_all(status: "active")
 ```
 
 ### 2.0
@@ -1103,32 +1105,32 @@ Blazer::Query.update_all(status: "active")
 To use Slack notifications, create a migration
 
 ```sh
-rails g migration add_slack_channels_to_blazer_checks
+rails g migration add_slack_channels_to_finery_checks
 ```
 
 with:
 
 ```ruby
-add_column :blazer_checks, :slack_channels, :text
+add_column :finery_checks, :slack_channels, :text
 ```
 
 ## History
 
-View the [changelog](https://github.com/ankane/blazer/blob/master/CHANGELOG.md)
+View the [changelog](https://github.com/finery-bi/finery/blob/master/CHANGELOG.md)
 
 ## Thanks
 
-Blazer uses a number of awesome open source projects, including [Rails](https://github.com/rails/rails/), [Vue.js](https://github.com/vuejs/vue), [jQuery](https://github.com/jquery/jquery), [Bootstrap](https://github.com/twbs/bootstrap), [Selectize](https://github.com/brianreavis/selectize.js), [StickyTableHeaders](https://github.com/jmosbech/StickyTableHeaders), [Stupid jQuery Table Sort](https://github.com/joequery/Stupid-Table-Plugin), and [Date Range Picker](https://github.com/dangrossman/bootstrap-daterangepicker).
+Finery uses a number of awesome open source projects, including [Rails](https://github.com/rails/rails/), [Vue.js](https://github.com/vuejs/vue), [jQuery](https://github.com/jquery/jquery), [Bootstrap](https://github.com/twbs/bootstrap), [Selectize](https://github.com/brianreavis/selectize.js), [StickyTableHeaders](https://github.com/jmosbech/StickyTableHeaders), [Stupid jQuery Table Sort](https://github.com/joequery/Stupid-Table-Plugin), and [Date Range Picker](https://github.com/dangrossman/bootstrap-daterangepicker).
 
 Demo data from [MovieLens](https://grouplens.org/datasets/movielens/).
 
-## Want to Make Blazer Better?
+## Want to Make Finery Better?
 
 That’s awesome! Here are a few ways you can help:
 
-- [Report bugs](https://github.com/ankane/blazer/issues)
-- Fix bugs and [submit pull requests](https://github.com/ankane/blazer/pulls)
+- [Report bugs](https://github.com/finery-bi/finery/issues)
+- Fix bugs and [submit pull requests](https://github.com/finery-bi/finery/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
-Check out the [dev app](https://github.com/ankane/blazer-dev) to get started.
+Check out the [dev app](https://github.com/finery-bi/finery-dev) to get started.

@@ -281,6 +281,8 @@ module Blazer
   end
 end
 
+Finery = Blazer
+
 require_relative "blazer/adapters"
 require_relative "blazer/anomaly_detectors"
 require_relative "blazer/forecasters"
