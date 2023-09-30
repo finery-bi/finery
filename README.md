@@ -2,13 +2,21 @@
 
 Explore your data with SQL. Easily create charts and dashboards, and share them with your team.
 
-[Try it out](https://finery.dokkuapp.com)
+## What exactly is this?
 
-[![Screenshot](https://finery.dokkuapp.com/assets/finery-a10baa40fef1ca2f5bb25fc97bcf261a6a54192fb1ad0f893c0f562b8c7c4697.png)](https://finery.dokkuapp.com)
+Finery is a fork of [Blazer](https://github.com/ankane/blazer) with multiple new features and improvements.
 
-Finery is also available as a [Docker image](https://github.com/finery-bi/finery-docker).
+I use Blazer daily for personal projects, but I've felt like Blazer PRs take a long time to being merged and I really wanted a more frequently updated drop-in replacement.
 
-:tangerine: Battle-tested at [Instacart](https://www.instacart.com/opensource)
+## Why is it called Finery?
+
+I've asked ChatGPT for name suggestions for a gem that is a fork of Blazer, but I wasn't happy with any of the results. Then I've asked it how would you call a fancier blazer and it suggested finery (which Merriam-Webster defines as _ornament, decoration, especially: dressy or showy clothing and jewels_). It's simple to type and easy to pronounce.
+
+## Should I send my PR here or to [ankane/blazer](https://github.com/ankane/blazer)?
+
+I'm keeping an eye on the open PRs and new code by @ankane. I plan on keeping the full compatibility with Blazer and if that ever changes I'll announce it with at least a couple months in advance.
+
+That being said I don't mind direct PRs to this repository, I'll try my best to review them as soon as I can. I reserve the right not to merge everything that got submitted to ankane/blazer, but if it gets accepted there I'll merge it here as well (with some possible changes to match Finery's code).
 
 [![Build Status](https://github.com/finery-bi/finery/workflows/build/badge.svg?branch=master)](https://github.com/finery-bi/finery/actions)
 
