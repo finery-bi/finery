@@ -5,7 +5,7 @@
 <% @variable_params = @query.persisted? ? variable_params(@query) : nested_variable_params(@query) %>
 
 <div id="app" v-cloak>
-  <%= form_for @query, url: (@query.persisted? ? query_path(@query, params: @variable_params) : queries_path(params: @variable_params)), html: {autocomplete: "off"} do |f| %>
+  <%= form_for @query, url: (@query.persisted? ? query_path(@query, params: @variable_params) : queries_path(params: @variable_params)), html: {autocomplete: "off"}, data: { controller: "unsaved", action: "unsaved#clear input->unsaved#set" } do |f| %>
     <div class="row">
       <div id="statement-box" class="col-xs-8">
         <div class= "form-group">
