@@ -1,3 +1,5 @@
+
+
 //= require ./jquery
 //= require ./rails-ujs
 //= require ./stupidtable
@@ -12,7 +14,7 @@
 //= require ./chartjs-adapter-date-fns.bundle
 //= require ./chartkick
 //= require ./mapkick.bundle
-//= require ./chartjs-plugin-annotation.js
+//= require ./chartjs-plugin-annotation.min
 //= require ./ace
 //= require ./Sortable
 //= require ./bootstrap

@@ -43,7 +43,7 @@ module Blazer
       boxes = sorted.select { |annotation| annotation[:max_date] }.map.with_index do |annotation, index|
         {
           type: "box",
-          xScaleID: "x-axis-0",
+          xScaleID: "x",
           xMin: annotation[:min_date],
           xMax: annotation[:max_date],
           backgroundColor: annotation[:color] || blazer_map_annotation_box_colors(index),
@@ -56,7 +56,8 @@ module Blazer
           type: "line",
           value: annotation[:min_date],
           mode: "vertical",
-          scaleID: "x-axis-0",
+          scaleID: "x",
+          adjustScaleRange: false,
           borderColor: annotation[:color] || '#00000050',
           drawTime: "afterDatasetsDraw",
           label: {
