@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/finery-bi/finery"
   spec.license       = "MIT"
 
-  spec.author        = "Andrew Kane"
-  spec.email         = "andrew@ankane.org"
+  spec.author        = "Andrew Kane, Chris Hasinski, Tomasz Ratajczak and contributors"
+  spec.email         = "krzysztof.hasinski+finery@gmail.com"
 
   spec.files         = Dir["*.{md,txt}", "{app,config,lib,licenses}/**/*"]
   spec.require_path  = "lib"
