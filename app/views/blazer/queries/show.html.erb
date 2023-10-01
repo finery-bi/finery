@@ -39,7 +39,12 @@
 
 <%= render partial: "blazer/variables", locals: {action: query_path(@query)} %>
 
-<pre id="code"><code><%= @statement.display_statement %></code></pre>
+<details class="row">
+  <summary class="col-md-1 col-md-offset-11 btn btn-sm btn-info">Show source</summary>
+  <pre id="code" class="col-md-12">
+    <code data-controller="code"><%= @statement.display_statement %></code>
+  </pre>
+</details>
 
 <% if @success %>
   <div id="results">
@@ -61,12 +66,3 @@
     runQuery(data, showRun, showError)
   </script>
 <% end %>
-
-<script>
-  // do not highlight really long queries
-  // this can lead to performance issues
-  var code = $("#code code")
-  if (code.text().length < 10000) {
-    hljs.highlightElement(code.get(0))
-  }
-</script>
