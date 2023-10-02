@@ -72,7 +72,7 @@ class QueriesTest < ActionDispatch::IntegrationTest
     query = create_query(statement: "SELECT {created_at}")
     get blazer.query_path(query)
     assert_response :success
-    assert_match "singleDatePicker", response.body
+    assert_match "datepicker", response.body
   end
 
   def test_variables_time_range
