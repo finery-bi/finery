@@ -7,5 +7,6 @@
 //= require ./code_controller
 //= require ./datepicker_controller
 //= require ./daterangepicker_controller
+//= require ./navbar_padding_controller
 //= require ./selectize_controller
 //= require ./unsaved_controller
