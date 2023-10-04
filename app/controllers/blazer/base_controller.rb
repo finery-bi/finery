@@ -103,6 +103,7 @@ module Blazer
     end
 
     def variable_params(resource, var_params = nil)
+      return {} unless resource.present?
       permitted_keys = resource.variables
       var_params ||= request.query_parameters
       var_params.slice(*permitted_keys)

@@ -273,7 +273,7 @@ module Blazer
           raise Error, @error if @error && Rails.env.test?
 
           data = csv_data(@columns, @rows, @data_source)
-          query_params = variable_params.select { |k| @query.variables.include?(k) }
+          query_params = variable_params(@query).select { |k| @query.variables.include?(k) }
           name = @query.try(:name).presence || "query"
           filename = "#{name}-#{query_params.to_query}".parameterize + ".csv"
           send_data data, type: "text/csv; charset=utf-8", disposition: "attachment", filename: filename
