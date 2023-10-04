@@ -53,7 +53,7 @@ gem "finery"
 Run:
 
 ```sh
-rails generate finery:install
+rails generate blazer:install
 rails db:migrate
 ```
 

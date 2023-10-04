@@ -119,14 +119,17 @@ module Blazer
   end
 
   def self.settings
-    @settings ||= begin
-      path = Rails.root.join("config", "blazer.yml").to_s
-      if File.exist?(path)
-        YAML.safe_load(ERB.new(File.read(path)).result, aliases: true)
-      else
-        {}
-      end
-    end
+    @settings ||= load_settings!
+  end
+
+  def self.load_settings!
+    path = Rails.root.join("config", "blazer.yml").to_s
+    return YAML.safe_load(ERB.new(File.read(path)).result, aliases: true) if File.exist?(path)
+
+    path = Rails.root.join("config", "finery.yml").to_s
+    return YAML.safe_load(ERB.new(File.read(path)).result, aliases: true) if File.exist?(path)
+
+    {}
   end
 
   def self.data_sources

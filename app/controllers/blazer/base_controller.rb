@@ -18,7 +18,7 @@ module Blazer
       raise Blazer::Error, "The docs for protecting Blazer with a custom before_action had an incorrect example from August 2017 to June 2018. The example method had a boolean return value. However, you must render or redirect if a user is unauthorized rather than return a falsy value. Double check that your before_action works correctly for unauthorized users (if it worked when added, there should be no issue). Then, change before_action to before_action_method in config/blazer.yml."
     end
 
-    if Blazer.before_action
+    if Blazear.before_action
       before_action Blazer.before_action.to_sym
     end
 
