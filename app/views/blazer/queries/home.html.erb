@@ -1,35 +1,22 @@
 <div id="queries">
-  <div id="header">
-    <div class="pull-right" style="line-height: 34px;">
-      <% if blazer_user %>
-        <%= link_to "All", root_path, class: !params[:filter] ? "active" : nil, style: "margin-right: 40px;" %>
-
-        <% if Blazer.audit %>
-          <%= link_to "Viewed", root_path(filter: "viewed"), class: params[:filter] == "viewed" ? "active" : nil, style: "margin-right: 40px;" %>
-        <% end %>
-
-        <%= link_to "Mine", root_path(filter: "mine"), class: params[:filter] == "mine" ? "active" : nil, style: "margin-right: 40px;" %>
+  <ul class="nav nav-pills d-flex flex-column flex-sm-row mb-3">
+    <li class="text-start flex-fill">
+    <input type="text" v-model="searchTerm" placeholder="Start typing a query, dashboard, or person" autofocus class="search form-control flex-fill align-self-stretch" />
+    </li>
+    <% if blazer_user %>
+      <li class="nav-item">
+        <%= link_to "All", blazer.root_path, class: { "nav-link": true, active: !params[:filter] } %>
+      </li>
+      <% if Blazer.audit %>
+        <li class="nav-item">
+          <%= link_to "Viewed", blazer.root_path(filter: "viewed"), class: { "nav-link": true, active: params[:filter] == "viewed" } %>
+        </li>
       <% end %>
-
-      <div class="btn-group">
-        <%= link_to "New Query", new_query_path, class: "btn btn-info" %>
-        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="caret"></span>
-          <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><%= link_to "Checks", checks_path %></li>
-          <% if Blazer.uploads? %>
-            <li><%= link_to "Uploads", uploads_path %></li>
-          <% end %>
-          <li role="separator" class="divider"></li>
-          <li><%= link_to "New Dashboard", new_dashboard_path %></li>
-          <li><%= link_to "New Check", new_check_path %></li>
-        </ul>
-      </div>
-    </div>
-    <input type="text" v-model="searchTerm" placeholder="Start typing a query, dashboard, or person" style="width: 300px; display: inline-block;" v-focus class="search form-control" />
-  </div>
+      <li class="nav-item">
+        <%= link_to "Mine", blazer.root_path(filter: "mine"), class: { "nav-link": true, active: params[:filter] == "mine" } %>
+      </li>
+    <% end %>
+  </ul>
 
   <table class="table">
     <thead>

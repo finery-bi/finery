@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-md fixed-top bg-body-tertiary" data-navbar-padding-target="navbar">
+  <div class="container flex-nowrap">
+    <span class="navbar-brand d-none d-sm-inline">Finery</span>
+    <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <span class="navbar-brand d-sm-none text-truncate"><%= blazer_title || "Finery" %></span>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <%= link_to "Home", blazer.root_path, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Checks", blazer.checks_path, class: "nav-link" %>
+        </li>
+        <% if Blazer.uploads? %>
+          <li class="nav-item">
+            <%= link_to "Uploads", blazer.uploads_path, class: "nav-link" %>
+          </li>
+        <% end %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            New
+          </a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Query", blazer.new_query_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Dashboard", blazer.new_dashboard_path, class: "dropdown-item" %></li>
+            <li><%= link_to "Check", blazer.new_check_path(query_id: @query&.id), class: "dropdown-item" %></li>
+            <% if Blazer.uploads? %>
+              <%= link_to "Upload", blazer.new_upload_path, class: "dropdown-item" %>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+      <%= yield(:nav) %>
+    </div>
+  </div>
+</nav>

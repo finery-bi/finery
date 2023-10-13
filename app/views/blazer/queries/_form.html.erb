@@ -7,38 +7,44 @@
 <div id="app" v-cloak>
   <%= form_for @query, url: (@query.persisted? ? query_path(@query, params: @variable_params) : queries_path(params: @variable_params)), html: {autocomplete: "off"}, data: { controller: "unsaved", action: "unsaved#clear input->unsaved#set" } do |f| %>
     <div class="row">
-      <div id="statement-box" class="col-xs-8">
+      <div id="statement-box" class="col-8">
         <div class= "form-group">
           <%= f.hidden_field :statement %>
           <div id="editor-container">
             <div id="editor" :style="{ height: editorHeight }"><%= @query.statement %></div>
           </div>
         </div>
-        <div class="form-group text-right" style="margin-bottom: 8px;">
-          <div class="pull-left" style="margin-top: 8px;">
-            <%= link_to "Back", :back %>
-            <a :href="docsPath" target="_blank" style="margin-left: 40px;">Docs</a>
-            <a :href="schemaPath" target="_blank" style="margin-left: 40px;">Schema</a>
+        <div class="form-group d-flex justify-content-between my-2">
+          <div>
+            <%= link_to "Back", :back, class: "me-2" %>
+            <a :href="docsPath" target="_blank" class="m-2">Docs</a>
+            <a :href="schemaPath" target="_blank" class="m-2">Schema</a>
           </div>
 
-          <%= f.select :data_source, Blazer.data_sources.map { |_, ds| [ds.name, ds.id] }, {}, class: ("hide" if Blazer.data_sources.size <= 1), style: "width: 140px;" %>
-          <div id="tables" style="display: inline-block; width: 250px; margin-right: 10px;">
-            <select id="table_names" style="width: 240px;" placeholder="Preview table"></select>
+          <div class="row">
+            <div class="col">
+              <%= f.select :data_source, Blazer.data_sources.map { |_, ds| [ds.name, ds.id] }, {}, class: ("hide" if Blazer.data_sources.size <= 1) %>
+            </div>
+            <div class="col">
+              <select id="table_names" placeholder="Preview table"></select>
+            </div>
           </div>
+        </div>
+        <div class="form-group">
           <a v-on:click="run" v-if="!running" class="btn btn-info" style="vertical-align: top; width: 70px;">Run</a>
           <a v-on:click="cancel" v-if="running" class="btn btn-danger" style="vertical-align: top; width: 70px;">Cancel</a>
         </div>
       </div>
-      <div class="col-xs-4">
-        <div class="form-group">
+      <div class="col-4">
+        <div class="form-group mb-3">
           <%= f.label :name %>
           <%= f.text_field :name, class: "form-control" %>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
           <%= f.label :description %>
           <%= f.text_area :description, placeholder: "Optional", style: "height: 80px;", class: "form-control" %>
         </div>
-        <div class="form-group text-right">
+        <div class="form-group text-end mb-3">
           <%= f.submit "For Enter Press", class: "hide" %>
           <% if @query.persisted? %>
             <%= link_to "Delete", query_path(@query), method: :delete, "data-confirm" => "Are you sure?", class: "btn btn-danger" %>

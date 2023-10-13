@@ -5,7 +5,7 @@
 //= require ./stupidtable
 //= require ./stupidtable-custom-settings
 //= require ./jquery.stickytableheaders
-//= require ./selectize
+//= require selectize.min
 //= require ./highlight.min
 //= require ./moment
 //= require ./moment-timezone-with-data
@@ -17,7 +17,7 @@
 //= require ./chartjs-plugin-annotation.min
 //= require ./ace
 //= require ./Sortable
-//= require ./bootstrap
+//= require bootstrap.bundle.min
 //= require ./vue.global.prod
 //= require ./routes
 //= require ./queries

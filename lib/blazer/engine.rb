@@ -8,11 +8,6 @@ module Blazer
           "blazer/application.js",
           "blazer/module.js",
           "blazer/application.css",
-          "blazer/glyphicons-halflings-regular.eot",
-          "blazer/glyphicons-halflings-regular.svg",
-          "blazer/glyphicons-halflings-regular.ttf",
-          "blazer/glyphicons-halflings-regular.woff",
-          "blazer/glyphicons-halflings-regular.woff2",
           "blazer/favicon.png"
         ]
       else

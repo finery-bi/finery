@@ -7,7 +7,7 @@
     <div class="alert alert-danger"><%= @check.errors.full_messages.first %></div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group mb-3">
     <%= f.label :query_id, "Query" %>
     <div class="hide">
       <%= f.select :query_id, [], {include_blank: true} %>
@@ -21,7 +21,7 @@
   </div>
 
   <% if @check.respond_to?(:check_type) %>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <%= f.label :check_type, "Alert if" %>
       <div class="hide">
         <% check_options = [["Any results (bad data)", "bad_data"], ["No results (missing data)", "missing_data"]] %>
@@ -33,7 +33,7 @@
       </script>
     </div>
   <% elsif @check.respond_to?(:invert) %>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <%= f.label :invert, "Fails if" %>
       <div class="hide">
         <%= f.select :invert, [["Any results (bad data)", false], ["No results (missing data)", true]] %>
@@ -45,7 +45,7 @@
   <% end %>
 
   <% if @check.respond_to?(:schedule) && Blazer.check_schedules %>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <%= f.label :schedule, "Run every" %>
       <div class="hide">
         <%= f.select :schedule, Blazer.check_schedules.map { |v| [v, v] } %>
@@ -56,13 +56,13 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group mb-3">
     <%= f.label :emails %>
     <%= f.text_field :emails, placeholder: "Optional, comma separated", class: "form-control" %>
   </div>
 
   <% if Blazer.slack? %>
-    <div class="form-group">
+    <div class="form-group mb-3">
       <%= f.label :slack_channels %>
       <%= f.text_field :slack_channels, placeholder: "Optional, comma separated", class: "form-control" %>
     </div>

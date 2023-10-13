@@ -1,27 +1,20 @@
 <% blazer_title @query.name %>
-
-<div class="topbar">
-  <div class="container">
-    <div class="row" style="padding-top: 13px;">
-      <div class="col-sm-9">
-        <%= render partial: "blazer/nav" %>
-        <h3 style="line-height: 34px; display: inline; margin-left: 5px;">
-          <%= @query.name %>
-        </h3>
-      </div>
-      <div class="col-sm-3 text-right">
-        <%= link_to "Edit", edit_query_path(@query, params: variable_params(@query)), class: "btn btn-default", disabled: !@query.editable?(blazer_user) %>
-        <%= link_to "Fork", new_query_path(params: {variables: variable_params(@query), fork_query_id: @query.id, data_source: @query.data_source, name: @query.name}), class: "btn btn-info" %>
-
-        <% if !@error && @success %>
-          <%= button_to "Download", run_queries_path(format: "csv"), params: @run_data, class: "btn btn-primary" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div style="margin-bottom: 60px;"></div>
+<% content_for :nav do %>
+  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+    <li class="navbar-brand d-none d-sm-inline text-wrap"><%= @query.name %></li>
+    <li class="nav-item">
+      <%= link_to "Edit", blazer.edit_query_path(@query, params: variable_params(@query)), class: "nav-link", disabled: !@query.editable?(blazer_user) %>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Fork", blazer.new_query_path(params: {variables: variable_params(@query), fork_query_id: @query.id, data_source: @query.data_source, name: @query.name}), class: "nav-link" %>
+    </li>
+    <li class="nav-item dropdown">
+      <% if !@error && @success %>
+        <%= button_to "Download", blazer.run_queries_path(format: "csv"), params: @run_data, class: "nav-link" %>
+      <% end %>
+    </li>
+  </ul>
+<% end %>
 
 <% if @sql_errors.any? %>
   <div class="alert alert-danger">
@@ -34,13 +27,13 @@
 <% end %>
 
 <% if @query.description.present? %>
-  <p style="white-space: pre-line;"><%= @query.description %></p>
+  <p class="text-pre-line"><%= @query.description %></p>
 <% end %>
 
 <%= render partial: "blazer/variables", locals: {action: query_path(@query)} %>
 
 <details class="row">
-  <summary class="col-md-1 col-md-offset-11 btn btn-sm btn-info">Show source</summary>
+  <summary class="col-md-1 offset-md-11 btn btn-sm btn-info">Show source</summary>
   <pre id="code" class="col-md-12">
     <code data-controller="code"><%= @statement.display_statement %></code>
   </pre>
@@ -54,7 +47,7 @@
   <script>
     function showRun(data) {
       $("#results").html(data)
-      $("#results table").stupidtable(stupidtableCustomSettings).stickyTableHeaders({fixedOffset: 60})
+      $("#results table").stupidtable(stupidtableCustomSettings).stickyTableHeaders({fixedOffset: 56})
     }
 
     function showError(message) {

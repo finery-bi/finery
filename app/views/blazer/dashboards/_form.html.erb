@@ -3,21 +3,23 @@
     <div class="alert alert-danger"><%= @dashboard.errors.full_messages.first %></div>
   <% end %>
 
-  <div class="form-group">
+  <div class="form-group mb-3">
     <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
   </div>
-  <div class="form-group" v-show="queries.length">
+  <div class="form-group mb-3" v-show="queries.length">
     <%= f.label :charts %>
     <ul id="queries" class="list-group">
-      <li class="list-group-item" v-for="(query, index) in queries" :key="query.id" v-cloak>
-        <span class="glyphicon glyphicon-remove" aria-hidden="true" v-on:click="remove(index)"></span>
+      <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(query, index) in queries" :key="query.id" v-cloak>
         {{ query.name }}
+        <button class="btn btn-sm btn-danger" v-on:click="remove(index)">
+          remove
+        </button>
         <input type="hidden" name="query_ids[]" :value="query.id">
       </li>
     </ul>
   </div>
-  <div class="form-group" v-cloak>
+  <div class="form-group mb-3" v-cloak>
     <%= f.label :query_id, "Add Chart" %>
     <%= select_tag :query_id, nil, {include_blank: true, placeholder: "Select chart"} %>
   </div>

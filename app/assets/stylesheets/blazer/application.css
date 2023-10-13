@@ -1,20 +1,26 @@
 /*
- *= require ./bootstrap-sprockets
- *= require ./bootstrap
- *= require ./selectize
+ *= require bootstrap.min
+ *= require selectize.bootstrap5
  *= require ./github
  *= require ./daterangepicker
  *= require_self
  */
+
+.hide {
+  display: none !important;
+}
 
 pre {
   border: none;
   border-radius: 0;
 }
 
-body {
-  padding-top: 15px;
-  padding-bottom: 15px;
+.text-pre-line {
+  white-space: pre-line;
+}
+
+body.with-navbar {
+  padding-top: 3.5rem;
 }
 
 table.results-table {
@@ -50,6 +56,10 @@ input.search:focus {
 
 .button_to input:focus {
   outline: none;
+}
+
+.selectize-control {
+  min-width: 10em;
 }
 
 .form-inline .selectize-control, .text-right .selectize-control {
@@ -157,24 +167,8 @@ input.search:focus {
   background-color: #fff;
 }
 
-.glyphicon-remove {
-  cursor: pointer;
-  color: #d9534f;
-  display: none;
-  float: right;
-  margin-top: 3px;
-}
-
-.list-group li:hover .glyphicon-remove {
-  display: inline;
-}
-
-.list-group {
+#queries.list-group {
   cursor: move;
-}
-
-#header a.active {
-  color: #999;
 }
 
 [v-cloak] {
@@ -195,34 +189,6 @@ input.search:focus {
 
 .query-error {
   color: red;
-}
-
-.small-form {
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 400px;
-}
-
-.alert {
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-h1, h2, h3, h4, p, hr, .table, .navbar, #header, .alert, .form-group {
-  margin-top: 0;
-  margin-bottom: 15px;
-}
-
-.double-margin, .chart-container {
-  margin-bottom: 30px;
-}
-
-h1 {
-  font-size: 24px;
-}
-
-h2 {
-  font-size: 20px;
 }
 
 .schema-table {
