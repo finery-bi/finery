@@ -32,12 +32,14 @@
 
 <%= render partial: "blazer/variables", locals: {action: query_path(@query)} %>
 
-<details class="row">
-  <summary class="col-md-1 offset-md-11 btn btn-sm btn-info">Show source</summary>
-  <pre id="code" class="col-md-12">
-    <code data-controller="code"><%= @statement.display_statement %></code>
-  </pre>
-</details>
+<div class="row">
+  <details class="col-12">
+    <summary class="btn btn-info">Show source</summary>
+    <pre id="code">
+      <code data-controller="code"><%= @statement.display_statement %></code>
+    </pre>
+  </details>
+</div>
 
 <% if @success %>
   <div id="results">

@@ -62,7 +62,7 @@ input.search:focus {
   min-width: 10em;
 }
 
-.form-inline .selectize-control, .text-right .selectize-control {
+.text-right .selectize-control {
   display: inline-block;
   vertical-align: middle;
   margin-left: 5px;

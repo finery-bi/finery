@@ -36,6 +36,12 @@ module Blazer
       k.nil? ? "null" : k.to_s
     end
 
+    def blazer_var_default?(key)
+      value = request.query_parameters[key]
+      return true if value.to_s == ""
+      return true if @data_sources.any? { |source| source.variable_defaults[key].to_s == value.to_s }
+    end
+
     def blazer_format_annotations(annotations)
       return [] unless annotations.is_a?(Array)
       sorted = annotations.sort_by { |annotation| annotation[:min_date] }
