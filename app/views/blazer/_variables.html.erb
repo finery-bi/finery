@@ -3,7 +3,7 @@
   <script>
     <%= blazer_js_var "timeZone", Blazer.time_zone.tzinfo.name %>
   </script>
-  <form id="bind" method="get" action="<%= action %>" class="form-inline" style="margin-bottom: 15px;" data-controller="autosubmit" data-action="change->autosubmit#call">
+  <form id="bind" method="get" action="<%= action %>" class="form-inline row g-3" style="margin-bottom: 15px;" data-controller="autosubmit more" data-action="change->autosubmit#call">
     <% date_vars = ["start_time", "end_time"] %>
     <% if (date_vars - @bind_vars).empty? %>
       <% @bind_vars = @bind_vars - date_vars %>
@@ -12,19 +12,17 @@
     <% end %>
 
     <% @bind_vars.each_with_index do |var, i| %>
-      <div class="form-group">
-      <%= label_tag var, var %>
-      <% if (data = @smart_vars[var]) %>
-        <%= select_tag var, options_for_select([[nil, nil]] + data, selected: var_params[var]), data: { controller: "selectize" }, style: "margin-right: 20px; width: 200px; display: none;" %>
+      <div class="col-12 col-md-2" <% if blazer_var_default?(var) %>data-more-target="field"<% end %>>
+      <%= label_tag var, var, class: "form-label" %>
+      <% if @smart_vars.key? var %>
+        <%= select_tag var, options_for_select(@smart_vars[var], var_params[var]), include_blank: true, data: { controller: "selectize" }, class: "form-select" %>
       <% elsif var.end_with?("_at") || var == "start_time" || var == "end_time" %>
-
-        <div class="selectize-control single" style="width: 200px;">
-          <div id="<%= var %>-select" class="selectize-input" style="display: inline-block;" data-controller="datepicker">
+        <div class="selectize-control single">
+          <div id="<%= var %>-select" class="selectize-input" data-controller="datepicker">
             <%= hidden_field_tag var, var_params[var], data: { datepicker_target: "input" }  %>
             <span data-datepicker-target="span">Select a date</span>
           </div>
         </div>
-
       <% else %>
         <%= text_field_tag var, var_params[var], autofocus: i == 0 && !var.end_with?("_at") && !var_params[var], class: "form-control" %>
       <% end %>
@@ -36,14 +34,20 @@
         <%= hidden_field_tag var, var_params[var] %>
       <% end %>
 
-      <%= label_tag nil, date_vars.join(" & ") %>
-      <div class="selectize-control single" style="width: 300px;">
+      <div class="selectize-control single col-12 col-md-4">
+      <%= label_tag nil, date_vars.join(" & "), class: "form-label" %>
         <div id="reportrange" class="selectize-input" style="display: inline-block;" data-controller="daterangepicker">
           <span>Select a time range</span>
         </div>
       </div>
     <% end %>
 
-    <input type="submit" class="btn btn-success" value="Run" style="vertical-align: top;" />
+    <div class="col-12 col-md-2 d-flex align-items-end d-none" data-more-target="show">
+      <button type="button" class="btn btn-info" data-action="more#show:prevent">More filters</button>
+    </div>
+
+    <div class="col-12">
+      <input type="submit" class="btn btn-success col-12 col-md-1 offset-md-11" value="Run">
+    </div>
   </form>
 <% end %>

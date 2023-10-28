@@ -61,6 +61,7 @@ module Blazer
     def show
       @statement = @query.statement_object
       @success = process_vars(@statement)
+      @data_sources = [Blazer.data_sources[@query.data_source]]
 
       @smart_vars = {}
       @sql_errors = []
