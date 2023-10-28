@@ -763,7 +763,6 @@ data_sources:
     # optional settings
     ssl_verify: true # false by default
 ```
->>>>>>> 41a6b49 (Added support for ClickHouse)
 
 ### Druid
 

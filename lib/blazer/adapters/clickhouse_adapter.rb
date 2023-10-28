@@ -37,6 +37,9 @@ module Blazer
         SQL
 
         response = connection.post(query: { query: statement, default_format: "CSV" })
+
+        return [] if response.body.nil?
+
         response.body
                 .group_by { |row| row[0] }
                 .transform_values { |columns| columns.map { |c| { name: c[1], data_type: c[2] } } }
@@ -54,7 +57,7 @@ module Blazer
       protected
 
       def connection
-        @connection ||= ClickHouse::Connection.new(config)
+        @connection ||= ::ClickHouse::Connection.new(config)
       end
 
       def config
@@ -69,7 +72,7 @@ module Blazer
             database: uri.path.sub(/\A\//, ""),
             ssl_verify: settings.fetch("ssl_verify", false)
           }.compact
-          ClickHouse::Config.new(**options)
+          ::ClickHouse::Config.new(**options)
         end
       end
 
