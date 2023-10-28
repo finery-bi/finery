@@ -33,11 +33,13 @@ module Blazer
     private
 
     def process_vars(statement, var_params = nil)
+      @empty_vars ||= []
       var_params ||= request.query_parameters
       (@bind_vars ||= []).concat(statement.variables).uniq!
       # update in-place so populated in view and consistent across queries on dashboard
       @bind_vars.each do |var|
         if !var_params[var]
+          @empty_vars << var
           default = statement.data_source.variable_defaults[var]
           # only add if default exists
           var_params[var] = default if default
