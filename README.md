@@ -133,7 +133,7 @@ end
 
 ### Other
 
-Specify a `before_action` method to run in `finery.yml`.
+Specify a `before_action` method to run in `blazer.yml`.
 
 ```yml
 before_action_method: require_admin
@@ -457,7 +457,7 @@ Add [prophet-rb](https://github.com/ankane/prophet) to your Gemfile:
 gem "prophet-rb"
 ```
 
-And add to `config/finery.yml`:
+And add to `config/blazer.yml`:
 
 ```yml
 anomaly_checks: prophet
@@ -473,7 +473,7 @@ Add [trend](https://github.com/ankane/trend) to your Gemfile:
 gem "trend"
 ```
 
-And add to `config/finery.yml`:
+And add to `config/blazer.yml`:
 
 ```yml
 anomaly_checks: trend
@@ -493,7 +493,7 @@ Add [anomaly_detection](https://github.com/ankane/AnomalyDetection.rb) to your G
 gem "anomaly_detection"
 ```
 
-And add to `config/finery.yml`:
+And add to `config/blazer.yml`:
 
 ```yml
 anomaly_checks: anomaly_detection
@@ -513,7 +513,7 @@ Add [prophet-rb](https://github.com/ankane/prophet) to your Gemfile:
 gem "prophet-rb", ">= 0.2.1"
 ```
 
-And add to `config/finery.yml`:
+And add to `config/blazer.yml`:
 
 ```yml
 forecasting: prophet
@@ -529,7 +529,7 @@ Add [trend](https://github.com/ankane/trend) to your Gemfile:
 gem "trend"
 ```
 
-And add to `config/finery.yml`:
+And add to `config/blazer.yml`:
 
 ```yml
 forecasting: trend
@@ -552,7 +552,7 @@ rails generate finery:uploads
 rails db:migrate
 ```
 
-And add to `config/finery.yml`:
+And add to `config/blazer.yml`:
 
 ```yml
 uploads:
@@ -571,7 +571,7 @@ CREATE SCHEMA uploads;
 
 Finery supports multiple data sources :tada:
 
-Add additional data sources in `config/finery.yml`:
+Add additional data sources in `config/blazer.yml`:
 
 ```yml
 data_sources:
