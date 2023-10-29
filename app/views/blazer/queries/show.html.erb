@@ -30,15 +30,19 @@
   <p class="text-pre-line"><%= @query.description %></p>
 <% end %>
 
+<% content_for(:run_options) do %>
+  <li>
+    <button class="dropdown-item" type="button" data-bs-toggle="collapse" data-bs-target="#code">Toggle source</button>
+  </li>
+<% end %>
 <%= render partial: "blazer/variables", locals: {action: query_path(@query)} %>
 
 <div class="row">
-  <details class="col-12">
-    <summary class="btn btn-info">Show source</summary>
-    <pre id="code">
-      <code data-controller="code"><%= @statement.display_statement %></code>
+  <div id="code" class="col-12 collapse">
+    <pre class="card">
+      <code class="card-body"data-controller="code"><%= @statement.display_statement %></code>
     </pre>
-  </details>
+  </div>
 </div>
 
 <% if @success %>

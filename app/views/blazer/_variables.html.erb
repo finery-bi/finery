@@ -3,7 +3,7 @@
   <script>
     <%= blazer_js_var "timeZone", Blazer.time_zone.tzinfo.name %>
   </script>
-  <form id="bind" method="get" action="<%= action %>" class="form-inline row g-3" style="margin-bottom: 15px;" data-controller="autosubmit more" data-action="change->autosubmit#call">
+  <form id="bind" method="get" action="<%= action %>" class="form-inline row g-3 mb-3" data-controller="autosubmit" data-action="change->autosubmit#call">
     <% date_vars = ["start_time", "end_time"] %>
     <% if (date_vars - @bind_vars).empty? %>
       <% @bind_vars = @bind_vars - date_vars %>
@@ -12,7 +12,7 @@
     <% end %>
 
     <% @bind_vars.each_with_index do |var, i| %>
-      <div class="col-12 col-md-2" <% if blazer_var_default?(var) %>data-more-target="field"<% end %>>
+      <div class="col-12 col-md-2 <% if @empty_vars.include?(var) %>collapse field-more<% end %>">
       <%= label_tag var, var, class: "form-label" %>
       <% if @smart_vars.key? var %>
         <%= select_tag var, options_for_select(@smart_vars[var], var_params[var]), include_blank: true, data: { controller: "selectize" }, class: "form-select" %>
@@ -42,12 +42,26 @@
       </div>
     <% end %>
 
-    <div class="col-12 col-md-2 d-flex align-items-end d-none" data-more-target="show">
-      <button type="button" class="btn btn-info" data-action="more#show:prevent">More filters</button>
-    </div>
+    <% if @empty_vars.any? %>
+      <div class="col-12 col-md-2 collapse show field-more">
+        <div class="d-flex align-items-end h-100">
+          <button type="button" class="btn btn-info" data-bs-toggle="collapse" data-bs-target=".field-more">More filters</button>
+        </div>
+      </div>
+    <% end %>
 
     <div class="col-12">
-      <input type="submit" class="btn btn-success col-12 col-md-1 offset-md-11" value="Run">
+      <div class="btn-group col-12 offset-md-11 col-md-1" role="group">
+        <input type="submit" class="btn btn-success" value="Run">
+        <% if content_for?(:run_options) %>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown"></button>
+            <ul class="dropdown-menu">
+              <%= yield(:run_options) %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
     </div>
   </form>
 <% end %>

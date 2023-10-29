@@ -1,16 +1,18 @@
 <nav class="navbar navbar-expand-md fixed-top bg-body-tertiary" data-navbar-padding-target="navbar">
   <div class="container">
     <div class="d-flex flex-nowrap mw-100">
-      <span class="navbar-brand d-none d-sm-inline">Finery</span>
+      <span class="navbar-brand d-none d-sm-inline">
+        <%= link_to "Finery", blazer.root_path, class: "nav-link" %>
+      </span>
       <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <span class="navbar-brand d-sm-none text-truncate"><%= blazer_title || "Finery" %></span>
     </div>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item">
-          <%= link_to "Home", blazer.root_path, class: "nav-link" %>
+      <ul class="navbar-nav me-auto mt-2 mt-md-0">
+        <li class="nav-item d-inline d-sm-none">
+        <%= link_to "Home", blazer.root_path, class: "nav-link" %>
         </li>
         <li class="nav-item">
           <%= link_to "Checks", blazer.checks_path, class: "nav-link" %>
