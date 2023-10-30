@@ -764,6 +764,8 @@ data_sources:
     ssl_verify: true # false by default
 ```
 
+Use a [read-only user](https://clickhouse.com/docs/en/operations/settings/permissions-for-queries#readonly).
+
 ### Druid
 
 Enable [SQL support](http://druid.io/docs/latest/querying/sql.html#configuration) on the broker and set:
