@@ -84,59 +84,6 @@ module Blazer
       end
     end
 
-    def line_data(library)
-      @columns[1..-1].each_with_index.map do |k, i|
-        {
-          name: series_name(k),
-          data: @rows.map{ |r| [r[0], r[i + 1]] },
-          library: library[i],
-        }
-      end
-    end
-
-    def line2_data(library)
-      unique = @rows.group_by { |r| smart_value(1, r[1]) }
-      unique.each_with_index.map do |(name, v), i|
-        {
-          name: series_name(name),
-          data: v.map { |v2| [v2[0], v2[2]] },
-          library: library[i],
-        }
-      end
-    end
-
-    def pie_data
-      @rows.map { |r| [smart_value(0, r[0]), r[1]] }
-    end
-
-    def bar_data
-      @columns.each_with_index.drop(1).map do |name, i|
-        {
-          name: series_name(name),
-          data: @rows.first(20).map { |r| [smart_value(0, r[0]), r[i]] },
-        }
-      end
-    end
-
-    def bar2_data
-      first_20 = @rows.group_by { |r| r[0] }.values.first(20).flatten(1)
-      labels = first_20.map { |r| r[0] }.uniq
-      series = first_20.map { |r| r[1] }.uniq
-      labels.each do |l|
-        series.each do |s|
-          first_20 << [l, s, 0] unless first_20.find { |r| r[0] == l && r[1] == s }
-         end
-       end
-      unique_20 = first_20.group_by { |r| smart_value(1, r[1]) }
-      unique_20.each_with_index.map do |(name, v), i|
-        values = v.sort_by { |r2| labels.index(r2[0]) }
-        {
-          name: series_name(name),
-          data: values.map { |v2| [smart_value(0, v2[0]), v2[2]] }
-        }
-      end
-    end
-
     def forecastable?
       @forecastable ||= Blazer.forecasting && column_types == ["time", "numeric"] && @rows.size >= 10
     end
@@ -226,16 +173,6 @@ module Blazer
 
       anomaly_detector = Blazer.anomaly_detectors.fetch(Blazer.anomaly_checks)
       anomaly_detector.call(series)
-    end
-
-    private
-
-    def series_name(name)
-      name.nil? ? "null" : name.to_s
-    end
-
-    def smart_value(column, value)
-      (@smart_values[@columns[column]] || {})[value.to_s] || value
     end
   end
 end

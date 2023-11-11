@@ -42,41 +42,6 @@
     <div class="alert alert-info"><%= @cohort_error %></div>
   <% end %>
   <% if @rows.any? %>
-    <% values = @rows.first %>
-    <% chart_id = SecureRandom.hex %>
-    <% column_types = @result.column_types %>
-    <% chart_type = @result.chart_type %>
-    <% chart_options = {id: chart_id} %>
-    <% if ["line", "line2"].include?(chart_type) %>
-      <% chart_options.merge!(min: nil) %>
-    <% end %>
-    <% if chart_type == "scatter" %>
-      <% chart_options.merge!(library: {tooltips: {intersect: false}}) %>
-    <% elsif ["bar", "bar2"].include?(chart_type) %>
-      <% chart_options.merge!(library: {tooltips: {intersect: false, axis: 'x'}}) %>
-    <% elsif chart_type != "pie" %>
-      <% if column_types.size == 2 || @forecast %>
-        <% chart_options.merge!(library: {tooltips: {intersect: false, axis: 'x'}}) %>
-      <% else %>
-        <%# chartjs axis: 'x' has poor behavior with multiple series %>
-        <% chart_options.merge!(library: {tooltips: {intersect: false}}) %>
-      <% end %>
-    <% end %>
-    <% if ["line", "line2"].include?(chart_type) %>
-      <% chart_options[:library].merge!({
-        annotation: { drawTime: "beforeDatasetsDraw", annotations: blazer_format_annotations(@annotations), }
-      }) %>
-    <% end %>
-    <% series_library = {} %>
-    <% target_index = @columns.index { |k| k.downcase == "target" } %>
-    <% if target_index %>
-      <% color = "#109618" %>
-      <% series_library[target_index - 1] = {pointStyle: "line", pointBorderWidth: 0, hitRadius: 5, borderColor: color, pointBackgroundColor: color, backgroundColor: color, pointHoverBackgroundColor: color} %>
-    <% end %>
-    <% if @forecast %>
-      <% color = "#54a3ee" %>
-      <% series_library[1] = {borderDash: [8], borderColor: color, pointBackgroundColor: color, backgroundColor: color, pointHoverBackgroundColor: color} %>
-    <% end %>
     <% if @markers.any? %>
       <% map_id = SecureRandom.hex %>
       <%= content_tag :div, nil, id: map_id, style: "height: #{@only_chart ? 300 : 500}px;" %>
@@ -95,18 +60,15 @@
         <%= blazer_js_var "mapId", map_id %>
         new Mapkick.AreaMap(mapId, geojson, {accessToken: mapboxAccessToken, tooltips: {hover: false, html: true}});
       </script>
-    <% elsif chart_type == "line" %>
-      <%= line_chart @result.line_data(series_library), **chart_options %>
-    <% elsif chart_type == "line2" %>
-      <%= line_chart @result.line2_data(series_library), **chart_options %>
-    <% elsif chart_type == "pie" %>
-      <%= pie_chart @result.pie_data, **chart_options %>
-    <% elsif chart_type == "bar" %>
-      <%= column_chart @result.bar_data, **chart_options %>
-    <% elsif chart_type == "bar2" %>
-        <%= column_chart @result.bar2_data, **chart_options %>
-    <% elsif chart_type == "scatter" %>
-      <%= scatter_chart @rows, xtitle: @columns[0], ytitle: @columns[1], **chart_options %>
+    <% elsif @result.chart_type.present? %>
+      <div class="chart">
+        <%= tag.canvas Blazer::ResultPresenter.new(@result).chart_data.to_json.html_safe, data: {
+              controller: "chart",
+              chart_type_value: @result.chart_type,
+              chart_forecast_value: @forecast,
+              chart_annotations_value: blazer_format_annotations(@annotations),
+        } %>
+      </div>
     <% elsif @only_chart %>
       <% if @rows.size == 1 && @rows.first.size == 1 %>
         <% v = @rows.first.first %>
