@@ -12,7 +12,6 @@
 //= require ./daterangepicker
 //= require ./chart.umd
 //= require ./chartjs-adapter-date-fns.bundle
-//= require ./chartkick
 //= require ./mapkick.bundle
 //= require ./chartjs-plugin-annotation.min
 //= require ./ace
