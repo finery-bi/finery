@@ -4,6 +4,7 @@
 
 //= require ./application
 //= require ./autosubmit_controller
+//= require ./chart_controller
 //= require ./code_controller
 //= require ./datepicker_controller
 //= require ./daterangepicker_controller
