@@ -32,10 +32,6 @@ module Blazer
       "var #{name} = #{json_escape(value.to_json(root: false))};".html_safe
     end
 
-    def blazer_series_name(k)
-      k.nil? ? "null" : k.to_s
-    end
-
     def blazer_format_annotations(annotations)
       return [] unless annotations.is_a?(Array)
       sorted = annotations.sort_by { |annotation| annotation[:min_date] }
