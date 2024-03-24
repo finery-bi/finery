@@ -1,0 +1,46 @@
+html[data-bs-theme=dark] {
+  .selectize-control.single .selectize-input, .selectize-dropdown {
+    box-shadow: none;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    background-image: none;
+    &.input-active {
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
+    }
+  }
+
+  .daterangepicker {
+    background-color: inherit;
+    .calendar-table {
+      background-color: inherit;
+      .next span, .prev span { border-color: var(--bs-body-color) }
+    }
+
+    .ranges {
+      li:hover { background-color: var(--bs-secondary-border-subtle) }
+      li.active { background-color: var(--bs-primary-border-subtle) }
+    }
+
+    td.available {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+    }
+
+    td.off, td.off.in-range, td.off.start-date, td.off.end-date {
+      background-color: var(--bs-dark-bg-subtle);
+      color: var(--bs-tertiary-color);
+    }
+
+    td.available:hover, td.off:hover {
+      color: var(--bs-highlight-color);
+      background-color: var(--bs-highlight-bg);
+    }
+
+    td.in-range {
+      background-color: var(--bs-primary-bg-subtle);
+      color: var(--bs-body-color);
+    }
+    td.active { background-color: var(--bs-primary-border-subtle) }
+  }
+}

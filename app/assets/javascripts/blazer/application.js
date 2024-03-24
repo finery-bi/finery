@@ -21,6 +21,7 @@
 //= require ./routes
 //= require ./queries
 //= require ./fuzzysearch
+//= require ./bs-theme
 
 $(document).on("click", "a[disabled]", function (e) {
   e.preventDefault()
