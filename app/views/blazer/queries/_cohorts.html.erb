@@ -6,33 +6,33 @@
 <% end %>
 <% if @rows.any? %>
   <div class="results-container">
-    <table class="table results-table">
+    <table class="table results-table text-end">
       <thead>
         <tr>
           <th style="min-width: 100px;">Cohort</th>
           <% 12.times do |i| %>
-            <th style="width: 7.5%; text-align: right;"><%= @conversion_period.titleize %> <%= i + 1 %></th>
+            <th style="width: 7.5%"><%= @conversion_period.titleize %> <%= i + 1 %></th>
           <% end %>
         </tr>
       </thead>
       <tbody>
-        <% @rows.each do |row| %>
+        <% @rows.each_with_index do |row, j| %>
           <tr>
             <td>
               <%= row[0] %>
-              <div style="font-size: 12px; color: #999;"><%= row[1] == 1 ? "1 user" : "#{number_with_delimiter(row[1])} users" %></div>
+              <div class="text-muted small"><%= row[1] == 1 ? "1 user" : "#{number_with_delimiter(row[1])} users" %></div>
             </td>
             <% 12.times do |i| %>
-              <td style="text-align: right;">
+              <td>
                 <% num = row[i + 2] %>
                 <% if num %>
                   <% denom = row[1] %>
                   <% if denom > 0 %>
-                    <%= (100.0 * num / denom).round %>%
+                    <%= (100.0 * num / denom).round(2) %>%
                   <% else %>
                     -
                   <% end %>
-                  <div style="font-size: 12px; color: #999;"><%= number_with_delimiter(num) %></div>
+                  <div class="text-muted small fs-6"><%= number_with_delimiter(num) %></div>
                 <% else %>
                   -
                 <% end %>

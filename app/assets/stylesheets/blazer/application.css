@@ -3,6 +3,7 @@
  *= require selectize.bootstrap5
  *= require ./github
  *= require ./daterangepicker
+ *= require ./darkmode
  *= require_self
  */
 
