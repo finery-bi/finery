@@ -2,21 +2,11 @@ module Blazer
   class Engine < ::Rails::Engine
     isolate_namespace Blazer
 
-    initializer "blazer" do |app|
-      if defined?(Sprockets) && Sprockets::VERSION.to_i >= 4
-        app.config.assets.precompile += [
-          "blazer/application.js",
-          "blazer/module.js",
-          "blazer/application.css",
-          "blazer/favicon.png"
-        ]
-      else
-        # use a proc instead of a string
-        app.config.assets.precompile << proc { |path| path =~ /\Ablazer\/application\.(js|css)\z/ }
-        app.config.assets.precompile << proc { |path| path =~ /\Ablazer\/.+\.(eot|svg|ttf|woff|woff2)\z/ }
-        app.config.assets.precompile << proc { |path| path == "blazer/favicon.png" }
-      end
+    initializer "static assets" do |app|
+      app.middleware.insert_before(::ActionDispatch::Static, ::ActionDispatch::Static, "#{root}/public")
+    end
 
+    initializer "blazer" do |_app|
       Blazer.time_zone ||= Blazer.settings["time_zone"] || Time.zone
       Blazer.audit = Blazer.settings.key?("audit") ? Blazer.settings["audit"] : true
       Blazer.user_name = Blazer.settings["user_name"] if Blazer.settings["user_name"]
