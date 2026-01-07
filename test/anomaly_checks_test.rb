@@ -20,15 +20,17 @@ class AnomalyChecksTest < ActionDispatch::IntegrationTest
   end
 
   def assert_anomaly(anomaly_checks)
-    Blazer.stub(:anomaly_checks, anomaly_checks) do
-      query = create_query(statement: "SELECT current_date + n AS day, 0.1 * random() FROM generate_series(1, 30) n")
+    skip if !postgresql? || RUBY_ENGINE == "truffleruby"
+
+    with_option(:anomaly_checks, anomaly_checks) do
+      query = create_query(statement: "SELECT current_date + n AS day, 0.1 FROM generate_series(1, 30) n")
       check = create_check(query: query, check_type: "anomaly")
 
       Blazer.run_checks(schedule: "5 minutes")
       check.reload
       assert_equal "passing", check.state
 
-      query.update!(statement: "SELECT current_date + n AS day, 0.1 * random() FROM generate_series(1, 30) n UNION ALL SELECT current_date + 31, 2")
+      query.update!(statement: "SELECT current_date + n AS day, 0.1 FROM generate_series(1, 30) n UNION ALL SELECT current_date + 31, 2")
 
       Blazer.run_checks(schedule: "5 minutes")
       check.reload
