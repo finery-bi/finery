@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gemspec path: ".."
 
+gem "logger"
 gem "rake"
 gem "minitest", ">= 5"
 gem "combustion"
