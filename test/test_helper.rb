@@ -1,3 +1,4 @@
+require "logger"
 require "bundler/setup"
 require "combustion"
 Bundler.require(:default)
