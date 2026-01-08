@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "railties", ">= 6.1"
   spec.add_dependency "activerecord", ">= 6.1"
+  spec.add_dependency "csv"
   spec.add_dependency "logger"
   spec.add_dependency "safely_block", ">= 0.4"
   spec.add_dependency "stimulus-rails", "~> 1.2"
