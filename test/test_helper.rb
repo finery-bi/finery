@@ -16,7 +16,8 @@ Combustion.initialize! :active_record, :action_controller, :action_mailer, :acti
   config.cache_store = :memory_store
 
   # fixes warning with adapter tests
-  config.action_dispatch.show_exceptions = :none
+  # Rails 7.1+ uses :none, Rails 6.1-7.0 uses false
+  config.action_dispatch.show_exceptions = Rails::VERSION::STRING.to_f >= 7.1 ? :none : false
 end
 
 Rails.cache.logger = logger
