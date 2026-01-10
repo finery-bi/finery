@@ -7,10 +7,62 @@
     <meta name="referrer" content="same-origin" />
 
     <meta charset="utf-8" />
-    <%= favicon_link_tag "blazer/favicon.png" %>
-    <%= stylesheet_link_tag "blazer/application" %>
-    <%= javascript_include_tag "blazer/application" %>
-    <%= javascript_include_tag "blazer/module", type: "module" %>
+    <link rel="icon" type="image/png" href="/finery/images/favicon.png">
+    <link rel="stylesheet" href="/finery/stylesheets/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="/finery/stylesheets/vendor/selectize.bootstrap5.css" />
+    <link rel="stylesheet" href="/finery/stylesheets/application.css" />
+    <link rel="stylesheet" href="/finery/stylesheets/darkmode.css" />
+    <link rel="stylesheet" href="/finery/stylesheets/daterangepicker.css" />
+    <link rel="stylesheet" href="/finery/stylesheets/github.css" />
+
+
+    <% # Vendor Libraries
+      [
+        "/vendor/jquery.js",
+        "/vendor/rails-ujs.js",
+        "/vendor/stupidtable.js",
+        "/vendor/stupidtable-custom-settings.js",
+        "/vendor/jquery.stickytableheaders.js",
+        "/vendor/selectize.min.js",
+        "/vendor/highlight.min.js",
+        "/vendor/moment.js",
+        "/vendor/moment-timezone-with-data.js",
+        "/vendor/daterangepicker.js",
+        "/vendor/chart.umd.js",
+        "/vendor/chartjs-adapter-date-fns.bundle.js",
+        "/vendor/mapkick.bundle.js",
+        "/vendor/chartjs-plugin-annotation.min.js",
+        "/vendor/ace.js",
+        "/vendor/Sortable.js",
+        "/vendor/bootstrap.bundle.min.js",
+        "/vendor/vue.global.prod.js",
+        "/vendor/routes.js",
+        "/vendor/queries.js",
+        "/vendor/fuzzysearch.js",
+        "/vendor/bs-theme.js",
+        "/vendor/stimulus.js",
+      ].each do |file|
+    %>
+      <script src="/finery/javascripts<%= file %>"></script>
+    <% end %>
+
+    <% # Ace library
+      [
+        "/ace/ace.js",
+        "/ace/ext-language_tools.js",
+        "/ace/mode-sql.js",
+        "/ace/theme-twilight.js",
+        "/ace/snippets/sql.js",
+        "/ace/snippets/text.js",
+      ].each do |file|
+    %>
+      <script src="/finery/javascripts<%= file %>"></script>
+    <% end %>
+
+
+
+    <script src="/finery/javascripts/application.js"></script>
+
     <script>
       <%= blazer_js_var "rootPath", root_path %>
     </script>
