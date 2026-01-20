@@ -1,13 +1,52 @@
 html[data-bs-theme=dark] {
-  .selectize-control.single .selectize-input, .selectize-dropdown {
+  /* Selectize input and dropdown container */
+  .selectize-control.single .selectize-input,
+  .selectize-control.multi .selectize-input,
+  .selectize-dropdown {
     box-shadow: none;
     color: var(--bs-body-color);
     background-color: var(--bs-body-bg);
     background-image: none;
+    border-color: var(--bs-border-color);
     &.input-active {
       color: var(--bs-body-color);
       background-color: var(--bs-body-bg);
     }
+  }
+
+  /* Selectize dropdown content and options */
+  .selectize-dropdown-content {
+    background-color: var(--bs-body-bg);
+  }
+
+  .selectize-dropdown .option,
+  .selectize-dropdown .optgroup-header {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+  }
+
+  .selectize-dropdown .option:hover,
+  .selectize-dropdown .option.active {
+    color: var(--bs-body-color);
+    background-color: var(--bs-tertiary-bg);
+  }
+
+  .selectize-dropdown .option.selected {
+    color: var(--bs-body-color);
+    background-color: var(--bs-primary-bg-subtle);
+  }
+
+  .selectize-dropdown .create {
+    color: var(--bs-body-color);
+  }
+
+  /* Selectize input text */
+  .selectize-input input {
+    color: var(--bs-body-color);
+  }
+
+  .selectize-input .item {
+    color: var(--bs-body-color);
   }
 
   .daterangepicker {
