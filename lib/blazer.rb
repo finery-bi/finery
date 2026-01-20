@@ -52,6 +52,8 @@ module Blazer
   autoload :SlackNotifier, "blazer/slack_notifier"
   # activejob optional
   autoload :RunStatementJob, "blazer/run_statement_job"
+  # ruby_llm optional
+  autoload :Ai, "blazer/ai"
 
   class << self
     attr_accessor :audit
@@ -74,6 +76,10 @@ module Blazer
     attr_accessor :slack_oauth_token
     attr_accessor :slack_webhook_url
     attr_accessor :mapbox_access_token
+
+    # AI features
+    attr_accessor :ai_enabled
+    attr_accessor :ai_model
   end
   self.audit = true
   self.user_name = :name
@@ -84,6 +90,10 @@ module Blazer
   self.images = false
   self.override_csp = false
   self.annotations = Blazer::Annotations
+
+  # AI defaults
+  self.ai_enabled = false
+  self.ai_model = "gpt-4o-mini"
 
   VARIABLE_MESSAGE = "Variable cannot be used in this position"
   TIMEOUT_MESSAGE = "Query timed out :("
@@ -227,6 +237,10 @@ module Blazer
   # TODO show warning on invalid access token
   def self.maps?
     mapbox_access_token.present? && mapbox_access_token.start_with?("pk.")
+  end
+
+  def self.ai?
+    ai_enabled && Blazer::Ai.enabled?
   end
 
   def self.uploads?

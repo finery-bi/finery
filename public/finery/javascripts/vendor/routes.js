@@ -22,5 +22,24 @@ var Routes = {
   },
   dashboard_path: function(id) {
     return rootPath + "dashboards/" + id
+  },
+  // AI routes
+  ai_generate_sql_path: function() {
+    return rootPath + "ai/generate_sql"
+  },
+  ai_explain_path: function() {
+    return rootPath + "ai/explain"
+  },
+  ai_fix_error_path: function() {
+    return rootPath + "ai/fix_error"
+  },
+  ai_summarize_path: function() {
+    return rootPath + "ai/summarize"
+  },
+  ai_suggest_optimizations_path: function() {
+    return rootPath + "ai/suggest_optimizations"
+  },
+  ai_status_path: function() {
+    return rootPath + "ai/status"
   }
 }

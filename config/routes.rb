@@ -21,5 +21,15 @@ Blazer::Engine.routes.draw do
     end
   end
 
+  # AI endpoints
+  scope :ai, controller: :ai do
+    post :generate_sql
+    post :explain
+    post :fix_error
+    post :summarize
+    post :suggest_optimizations
+    get :status
+  end
+
   root to: "queries#home"
 end

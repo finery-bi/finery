@@ -13,7 +13,7 @@ module Blazer
         audit = Blazer::Audit.new(statement: audit_statement)
         audit.query = query
         audit.data_source = data_source.id
-        audit.user = options[:user]
+        audit.user = options[:user] if audit.respond_to?(:user=)
         audit.save!
       end
 

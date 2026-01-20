@@ -23,6 +23,14 @@ module Blazer
       Blazer.slack_oauth_token = Blazer.settings["slack_oauth_token"] || ENV["BLAZER_SLACK_OAUTH_TOKEN"]
       Blazer.slack_webhook_url = Blazer.settings["slack_webhook_url"] || ENV["BLAZER_SLACK_WEBHOOK_URL"]
       Blazer.mapbox_access_token = Blazer.settings["mapbox_access_token"] || ENV["MAPBOX_ACCESS_TOKEN"]
+
+      # AI configuration
+      ai_config = Blazer.settings["ai"] || {}
+      Blazer.ai_enabled = ai_config["enabled"] || false
+      Blazer.ai_model = ai_config["model"] || "gpt-4o-mini"
+
+      # Configure RubyLLM if AI is enabled
+      Blazer::Ai.configure! if Blazer.ai_enabled
     end
   end
 end

@@ -81,3 +81,17 @@ check_schedules:
 #   url: <%%= ENV["BLAZER_UPLOADS_URL"] %>
 #   schema: uploads
 #   data_source: main
+
+# AI features (requires ruby_llm gem)
+# ai:
+#   enabled: true
+#   model: gpt-4o-mini  # or claude-sonnet-4, gemini-2.0-flash, etc.
+#
+#   # Provider API keys (can also use environment variables)
+#   # openai_api_key: <%%= ENV["OPENAI_API_KEY"] %>
+#   # anthropic_api_key: <%%= ENV["ANTHROPIC_API_KEY"] %>
+#   # gemini_api_key: <%%= ENV["GEMINI_API_KEY"] %>
+#
+#   # For local models (Ollama)
+#   # openai_api_base: http://localhost:11434/v1
+#   # model: llama3:8b
