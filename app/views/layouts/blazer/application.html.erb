@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title><%= blazer_title ? blazer_title : "Finery" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="noindex" />
     <meta name="referrer" content="same-origin" />
+    <meta name="color-scheme" content="light dark" />
 
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="/finery/images/favicon.png">
@@ -69,9 +70,10 @@
     <%= csrf_meta_tags %>
   </head>
   <body class="with-navbar overflow-y-scroll" data-controller="navbar-padding">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <%= render partial: "blazer/navbar" %>
-    <div class="container mt-2">
+    <main id="main-content" class="container mt-2" role="main">
       <%= yield %>
-    </div>
+    </main>
   </body>
 </html>
