@@ -402,3 +402,18 @@ code {
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
 }
+
+/* Finery logo */
+.finery-logo {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover .finery-logo {
+  transform: scale(1.1);
+}
+
+.navbar-brand .nav-link {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
