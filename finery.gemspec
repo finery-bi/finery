@@ -22,6 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "safely_block", ">= 0.4"
   spec.add_dependency "stimulus-rails", "~> 1.2"
 
-  # Optional: AI features (natural language to SQL, query explanation, etc.)
-  spec.add_dependency "ruby_llm", ">= 1.0"
+  # Note: For AI features (natural language to SQL, query explanation), add ruby_llm to your Gemfile:
+  # gem "ruby_llm", ">= 1.0"
 end
