@@ -8,23 +8,26 @@
 <% end %>
 
 <% if @data_sources.any? { |ds| ds.cache_mode != "off" } %>
-  <p class="text-muted" style="float: right;">
+  <p class="text-muted float-end mb-3">
     Some queries may be cached
-    <%= link_to "Refresh", refresh_dashboard_path(@dashboard, params: variable_params(@dashboard)), method: :post %>
+    <%= link_to "Refresh", refresh_dashboard_path(@dashboard, params: variable_params(@dashboard)), method: :post, class: "ms-2" %>
   </p>
 <% end %>
 
 <% if @bind_vars.any? %>
   <%= render partial: "blazer/variables", locals: {action: dashboard_path(@dashboard)} %>
 <% else %>
-  <div style="padding-bottom: 15px;"></div>
+  <div class="pb-3"></div>
 <% end %>
 
 <% @queries.each_with_index do |query, i| %>
-  <div class="chart-container">
-    <h4><%= link_to query.friendly_name, query_path(query, params: variable_params(query)), target: "_blank" %></h4>
-    <div id="chart-<%= i %>" class="chart">
-      <p class="text-muted">Loading...</p>
+  <div class="chart-container mb-4">
+    <h4><%= link_to query.friendly_name, query_path(query, params: variable_params(query)), target: "_blank", "aria-label": "View query: #{query.friendly_name}" %></h4>
+    <div id="chart-<%= i %>" class="chart" role="region" aria-label="<%= query.friendly_name %> results">
+      <div class="text-center py-4" role="status" aria-live="polite">
+        <span class="spinner"></span>
+        <span class="text-muted">Loading...</span>
+      </div>
     </div>
   </div>
   <script>

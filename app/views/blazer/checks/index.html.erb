@@ -1,31 +1,38 @@
 <% blazer_title "Checks" %>
 
-<div id="header">
-  <input id="search" type="text" placeholder="Start typing a query or state" style="width: 300px; display: inline-block;" class="search form-control" />
+<div id="header" class="mb-3">
+  <label for="search" class="visually-hidden">Search checks</label>
+  <input id="search" type="text" placeholder="Search checks..." class="search form-control d-inline-block" style="max-width: 300px;" aria-label="Search checks by query or state" />
 </div>
 
-<table id="checks" class="table">
+<table id="checks" class="table" role="grid" aria-label="Data checks">
   <thead>
     <tr>
-      <th>Query</th>
-      <th style="width: 10%;">State</th>
-      <th style="width: 10%;">Run</th>
-      <th style="width: 20%;">Notify</th>
-      <th style="width: 15%;"></th>
+      <th scope="col">Query</th>
+      <th scope="col" class="w-10">State</th>
+      <th scope="col" class="w-10">Run</th>
+      <th scope="col" class="w-20">Notify</th>
+      <th scope="col" class="w-15 text-end">Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @checks.each do |check| %>
       <tr>
-        <td><%= link_to check.query.name, check.query %> <span class="text-muted"><%= check.try(:check_type).to_s.gsub("_", " ") %></span></td>
+        <td>
+          <%= link_to check.query.name, check.query %>
+          <span class="text-muted ms-1"><%= check.try(:check_type).to_s.gsub("_", " ") %></span>
+        </td>
         <td>
           <% if check.state %>
-            <small class="check-state <%= check.state.parameterize.gsub("-", "_") %>"><%= check.state.upcase %></small>
+            <span class="status-badge status-badge-<%= check.state == 'passing' ? 'success' : (check.state == 'failing' ? 'danger' : 'secondary') %>" role="status">
+              <span class="status-dot status-dot-<%= check.state == 'passing' ? 'success' : (check.state == 'failing' ? 'danger' : 'warning') %>"></span>
+              <%= check.state.titleize %>
+            </span>
           <% end %>
         </td>
         <td><%= check.schedule if check.respond_to?(:schedule) %></td>
         <td>
-          <ul class="list-unstyled" style="margin-bottom: 0; word-break: break-all;">
+          <ul class="list-unstyled mb-0 small" style="word-break: break-all;">
             <% check.split_emails.each do |email| %>
               <li><%= email %></li>
             <% end %>
@@ -34,9 +41,19 @@
             <% end %>
           </ul>
         </td>
-        <td style="text-align: right; padding: 1px;">
-          <%= link_to "Edit", edit_check_path(check), class: "btn btn-info" %>
-          <%= button_to "Run Now", refresh_query_path(check.query), class: "btn btn-primary" %>
+        <td class="text-end">
+          <%= link_to "Edit", edit_check_path(check), class: "btn btn-sm btn-outline-secondary me-1" %>
+          <%= button_to "Run Now", refresh_query_path(check.query), class: "btn btn-sm btn-primary" %>
+        </td>
+      </tr>
+    <% end %>
+    <% if @checks.empty? %>
+      <tr>
+        <td colspan="5" class="text-center py-4">
+          <div class="empty-state">
+            <div class="empty-state-title">No checks yet</div>
+            <div class="empty-state-description">Create a check to monitor your queries</div>
+          </div>
         </td>
       </tr>
     <% end %>

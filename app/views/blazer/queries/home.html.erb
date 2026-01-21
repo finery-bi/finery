@@ -1,7 +1,8 @@
 <div id="queries">
-  <ul class="nav nav-pills d-flex flex-column flex-sm-row mb-3">
+  <ul class="nav nav-pills d-flex flex-column flex-sm-row mb-3" role="navigation" aria-label="Query filters">
     <li class="text-start flex-fill">
-    <input type="text" v-model="searchTerm" placeholder="Start typing a query, dashboard, or person" autofocus class="search form-control flex-fill align-self-stretch" />
+      <label for="query-search" class="visually-hidden">Search queries, dashboards, or people</label>
+      <input type="text" id="query-search" v-model="searchTerm" placeholder="Search queries..." autofocus class="search form-control flex-fill align-self-stretch" aria-label="Search queries, dashboards, or people" />
     </li>
     <% if blazer_user %>
       <li class="nav-item">
@@ -18,29 +19,51 @@
     <% end %>
   </ul>
 
-  <table class="table">
+  <!-- Result count -->
+  <div class="result-count mb-2" v-cloak>
+    <span v-if="searchTerm.length > 0">
+      Showing <strong>{{ visibleItems.length }}</strong> of <strong>{{ totalCount }}</strong> results
+    </span>
+    <span v-else>
+      <strong>{{ totalCount }}</strong> queries and dashboards
+    </span>
+  </div>
+
+  <table class="table" role="grid" aria-label="Queries and dashboards">
     <thead>
       <tr>
-        <th>Name</th>
+        <th scope="col">Name</th>
         <% if Blazer.user_class %>
-          <th style="width: 20%; text-align: right;">Mastermind</th>
+          <th scope="col" class="w-20 text-end">Mastermind</th>
         <% end%>
       </tr>
     </thead>
     <tbody class="list" v-cloak>
-      <tr v-for="query in visibleItems">
+      <tr v-for="query in visibleItems" :key="query.id || query.name">
         <td>
-          <a :href="itemPath(query)" :class="{ dashboard: query.dashboard }">{{ query.name }}</a>
-          <span class="vars">{{ query.vars }}</span>
+          <a :href="itemPath(query)" :class="{ dashboard: query.dashboard, 'fw-semibold': query.dashboard }">{{ query.name }}</a>
+          <span class="vars ms-2" v-if="query.vars">{{ query.vars }}</span>
         </td>
         <% if Blazer.user_class %>
           <td class="creator">{{ query.creator }}</td>
         <% end %>
       </tr>
+      <tr v-if="visibleItems.length === 0 && !more">
+        <td colspan="<%= Blazer.user_class ? 2 : 1 %>" class="text-center py-4">
+          <div class="empty-state">
+            <div class="empty-state-title">No results found</div>
+            <div class="empty-state-description">Try adjusting your search or filters</div>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 
-  <p v-if="more" class="text-muted">Loading...</p>
+  <!-- Loading state -->
+  <div v-if="more" class="text-center py-3" role="status" aria-live="polite">
+    <span class="spinner"></span>
+    <span class="text-muted">Loading more...</span>
+  </div>
 </div>
 
 <script>
@@ -106,6 +129,9 @@
       }
     },
     computed: {
+      totalCount: function() {
+        return this.listItems.length
+      },
       visibleItems: function () {
         // hack to get to update
         this.updateCounter
