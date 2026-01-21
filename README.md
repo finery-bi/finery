@@ -2,23 +2,9 @@
 
 Explore your data with SQL. Easily create charts and dashboards, and share them with your team.
 
-## What exactly is this?
-
-Finery is a fork of [Blazer](https://github.com/ankane/blazer) with multiple new features and improvements.
-
-I use Blazer daily for personal projects, but I've felt like Blazer PRs take a long time to being merged and I really wanted a more frequently updated drop-in replacement.
-
-## Why is it called Finery?
-
-I've asked ChatGPT for name suggestions for a gem that is a fork of Blazer, but I wasn't happy with any of the results. Then I've asked it how would you call a fancier blazer and it suggested finery (which Merriam-Webster defines as _ornament, decoration, especially: dressy or showy clothing and jewels_). It's simple to type and easy to pronounce.
-
-## Should I send my PR here or to [ankane/blazer](https://github.com/ankane/blazer)?
-
-I'm keeping an eye on the open PRs and new code by @ankane. I plan on keeping the full compatibility with Blazer and if that ever changes I'll announce it with at least a couple months in advance.
-
-That being said I don't mind direct PRs to this repository, I'll try my best to review them as soon as I can. I reserve the right not to merge everything that got submitted to ankane/blazer, but if it gets accepted there I'll merge it here as well (with some possible changes to match Finery's code).
-
 [![Build Status](https://github.com/finery-bi/finery/workflows/build/badge.svg?branch=master)](https://github.com/finery-bi/finery/actions)
+
+Finery is a fork of [Blazer](https://github.com/ankane/blazer) with new features and more frequent updates.
 
 ## Features
 
@@ -28,23 +14,9 @@ That being said I don't mind direct PRs to this repository, I'll try my best to 
 - **Audits** - all queries are tracked
 - **Security** - works with your authentication system
 
-## Docs
-
-- [Installation](#installation)
-- [Queries](#queries)
-- [Charts](#charts)
-- [Dashboards](#dashboards)
-- [Checks](#checks)
-- [Cohorts](#cohorts)
-- [Anomaly Detection](#anomaly-detection)
-- [Forecasting](#forecasting)
-- [Uploads](#uploads)
-- [Data Sources](#data-sources)
-- [Query Permissions](#query-permissions)
-
 ## Installation
 
-Add this line to your application’s Gemfile:
+Add this line to your application's Gemfile:
 
 ```ruby
 gem "finery"
@@ -71,127 +43,20 @@ ENV["BLAZER_DATABASE_URL"] = "postgres://user:password@hostname:5432/database"
 
 When possible, Finery tries to protect against queries which modify data by running each query in a transaction and rolling it back, but a safer approach is to use a read-only user. [See how to create one](#permissions).
 
-#### Checks (optional)
+## Docs
 
-Be sure to set a host in `config/environments/production.rb` for emails to work.
-
-```ruby
-config.action_mailer.default_url_options = {host: "finery.dokkuapp.com"}
-```
-
-Schedule checks to run (with cron, [Heroku Scheduler](https://elements.heroku.com/addons/scheduler), etc). The default options are every 5 minutes, 1 hour, or 1 day, which you can customize. For each of these options, set up a task to run.
-
-```sh
-rake finery:run_checks SCHEDULE="5 minutes"
-rake finery:run_checks SCHEDULE="1 hour"
-rake finery:run_checks SCHEDULE="1 day"
-```
-
-You can also set up failing checks to be sent once a day (or whatever you prefer).
-
-```sh
-rake finery:send_failing_checks
-```
-
-Here’s what it looks like with cron.
-
-```
-*/5 * * * * rake finery:run_checks SCHEDULE="5 minutes"
-0   * * * * rake finery:run_checks SCHEDULE="1 hour"
-30  7 * * * rake finery:run_checks SCHEDULE="1 day"
-0   8 * * * rake finery:send_failing_checks
-```
-
-For Slack notifications, create an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) and set:
-
-```sh
-BLAZER_SLACK_WEBHOOK_URL=https://hooks.slack.com/...
-```
-
-Name the webhook “Finery” and add a cool icon.
-
-## Authentication
-
-Don’t forget to protect the dashboard in production.
-
-### Basic Authentication
-
-Set the following variables in your environment or an initializer.
-
-```ruby
-ENV["BLAZER_USERNAME"] = "andrew"
-ENV["BLAZER_PASSWORD"] = "secret"
-```
-
-### Devise
-
-```ruby
-authenticate :user, ->(user) { user.admin? } do
-  mount Finery::Engine, at: "finery"
-end
-```
-
-### Other
-
-Specify a `before_action` method to run in `blazer.yml`.
-
-```yml
-before_action_method: require_admin
-```
-
-You can define this method in your `ApplicationController`.
-
-```ruby
-def require_admin
-  # depending on your auth, something like...
-  redirect_to root_path unless current_user && current_user.admin?
-end
-```
-
-Be sure to render or redirect for unauthorized users.
-
-## Permissions
-
-### PostgreSQL
-
-Create a user with read-only permissions:
-
-```sql
-BEGIN;
-CREATE ROLE finery LOGIN PASSWORD 'secret';
-GRANT CONNECT ON DATABASE dbname TO finery;
-GRANT USAGE ON SCHEMA public TO finery;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO finery;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO finery;
-COMMIT;
-```
-
-### MySQL
-
-Create a user with read-only permissions:
-
-```sql
-CREATE USER 'finery'@'127.0.0.1' IDENTIFIED BY 'secret';
-GRANT SELECT, SHOW VIEW ON dbname.* TO 'finery'@'127.0.0.1';
-FLUSH PRIVILEGES;
-```
-
-## Sensitive Data
-
-If your database contains sensitive or personal data, check out [Hypershield](https://github.com/ankane/hypershield) to shield it.
-
-## Encrypted Data
-
-If you need to search encrypted data, use [blind indexing](https://github.com/ankane/blind_index).
-
-You can have Finery transform specific variables with:
-
-```ruby
-Finery.transform_variable = lambda do |name, value|
-  value = User.generate_email_bidx(value) if name == "email_bidx"
-  value
-end
-```
+- [Queries](#queries)
+- [Charts](#charts)
+- [Dashboards](#dashboards)
+- [Checks](#checks)
+- [Cohorts](#cohorts)
+- [Anomaly Detection](#anomaly-detection)
+- [Forecasting](#forecasting)
+- [Uploads](#uploads)
+- [Data Sources](#data-sources)
+- [Authentication](#authentication)
+- [Permissions](#permissions)
+- [Query Permissions](#query-permissions)
 
 ## Queries
 
@@ -219,7 +84,7 @@ Suppose you have the query:
 SELECT * FROM users WHERE occupation_id = {occupation_id}
 ```
 
-Instead of remembering each occupation’s id, users can select occupations by name.
+Instead of remembering each occupation's id, users can select occupations by name.
 
 Add a smart variable with:
 
@@ -404,7 +269,7 @@ SELECT date_trunc('week', created_at), COUNT(*) AS new_users, 100000 AS target F
 
 Create a dashboard with multiple queries. [Example](https://finery.dokkuapp.com/dashboards/1-dashboard-demo)
 
-If the query has a chart, the chart is shown. Otherwise, you’ll see a table.
+If the query has a chart, the chart is shown. Otherwise, you'll see a table.
 
 If any queries have variables, they will show up on the dashboard.
 
@@ -420,6 +285,45 @@ SELECT * FROM ratings WHERE user_id IS NULL /* all ratings should have a user */
 
 Then create check with optional emails if you want to be notified. Emails are sent when a check starts failing, and when it starts passing again.
 
+### Setting Up Checks
+
+Be sure to set a host in `config/environments/production.rb` for emails to work.
+
+```ruby
+config.action_mailer.default_url_options = {host: "finery.dokkuapp.com"}
+```
+
+Schedule checks to run (with cron, [Heroku Scheduler](https://elements.heroku.com/addons/scheduler), etc). The default options are every 5 minutes, 1 hour, or 1 day, which you can customize. For each of these options, set up a task to run.
+
+```sh
+rake finery:run_checks SCHEDULE="5 minutes"
+rake finery:run_checks SCHEDULE="1 hour"
+rake finery:run_checks SCHEDULE="1 day"
+```
+
+You can also set up failing checks to be sent once a day (or whatever you prefer).
+
+```sh
+rake finery:send_failing_checks
+```
+
+Here's what it looks like with cron.
+
+```
+*/5 * * * * rake finery:run_checks SCHEDULE="5 minutes"
+0   * * * * rake finery:run_checks SCHEDULE="1 hour"
+30  7 * * * rake finery:run_checks SCHEDULE="1 day"
+0   8 * * * rake finery:send_failing_checks
+```
+
+For Slack notifications, create an [incoming webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) and set:
+
+```sh
+BLAZER_SLACK_WEBHOOK_URL=https://hooks.slack.com/...
+```
+
+Name the webhook "Finery" and add a cool icon.
+
 ## Cohorts
 
 Create a cohort analysis from a simple SQL query. [Example](https://finery.dokkuapp.com/queries/19-cohort-analysis-from-first-order)
@@ -433,7 +337,7 @@ You can generate cohorts from the first conversion time:
 SELECT user_id, created_at AS conversion_time FROM orders
 ```
 
-(the first conversion isn’t counted in the first time period with this format)
+(the first conversion isn't counted in the first time period with this format)
 
 Or from another time, like sign up:
 
@@ -641,7 +545,7 @@ data_sources:
     region: ...
 ```
 
-Here’s an example IAM policy:
+Here's an example IAM policy:
 
 ```json
 {
@@ -831,7 +735,7 @@ Use a [read-only user](https://docs.influxdata.com/influxdb/v1.8/administration/
 
 ### MySQL
 
-Add [mysql2](https://github.com/brianmario/mysql2) to your Gemfile (if it’s not there) and set:
+Add [mysql2](https://github.com/brianmario/mysql2) to your Gemfile (if it's not there) and set:
 
 ```yml
 data_sources:
@@ -881,7 +785,7 @@ Use a [read-only user](https://docs.oracle.com/cd/B19306_01/network.102/b14266/a
 
 ### PostgreSQL
 
-Add [pg](https://github.com/ged/ruby-pg) to your Gemfile (if it’s not there) and set:
+Add [pg](https://github.com/ged/ruby-pg) to your Gemfile (if it's not there) and set:
 
 ```yml
 data_sources:
@@ -996,7 +900,7 @@ data_sources:
 
 Use a [read-only user](https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/getting-started-with-database-engine-permissions?view=sql-server-ver15).
 
-## Creating an Adapter
+### Creating an Adapter
 
 Create an adapter for any data store with:
 
@@ -1017,6 +921,72 @@ data_sources:
     url: http://user:password@hostname:9200/
 ```
 
+## Authentication
+
+Don't forget to protect the dashboard in production.
+
+### Basic Authentication
+
+Set the following variables in your environment or an initializer.
+
+```ruby
+ENV["BLAZER_USERNAME"] = "andrew"
+ENV["BLAZER_PASSWORD"] = "secret"
+```
+
+### Devise
+
+```ruby
+authenticate :user, ->(user) { user.admin? } do
+  mount Finery::Engine, at: "finery"
+end
+```
+
+### Other
+
+Specify a `before_action` method to run in `blazer.yml`.
+
+```yml
+before_action_method: require_admin
+```
+
+You can define this method in your `ApplicationController`.
+
+```ruby
+def require_admin
+  # depending on your auth, something like...
+  redirect_to root_path unless current_user && current_user.admin?
+end
+```
+
+Be sure to render or redirect for unauthorized users.
+
+## Permissions
+
+### PostgreSQL
+
+Create a user with read-only permissions:
+
+```sql
+BEGIN;
+CREATE ROLE finery LOGIN PASSWORD 'secret';
+GRANT CONNECT ON DATABASE dbname TO finery;
+GRANT USAGE ON SCHEMA public TO finery;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO finery;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO finery;
+COMMIT;
+```
+
+### MySQL
+
+Create a user with read-only permissions:
+
+```sql
+CREATE USER 'finery'@'127.0.0.1' IDENTIFIED BY 'secret';
+GRANT SELECT, SHOW VIEW ON dbname.* TO 'finery'@'127.0.0.1';
+FLUSH PRIVILEGES;
+```
+
 ## Query Permissions
 
 Finery supports a basic permissions model.
@@ -1025,20 +995,22 @@ Finery supports a basic permissions model.
 2. Queries whose name starts with `#` are only listed to the creator
 3. Queries whose name starts with `*` can only be edited by the creator
 
-## Learn SQL
+## Sensitive Data
 
-Have team members who want to learn SQL? Here are a few great, free resources.
+If your database contains sensitive or personal data, check out [Hypershield](https://github.com/ankane/hypershield) to shield it.
 
-- [The Data School](https://dataschool.com/learn-sql/)
-- [SQLBolt](https://sqlbolt.com/)
+## Encrypted Data
 
-## Useful Tools
+If you need to search encrypted data, use [blind indexing](https://github.com/ankane/blind_index).
 
-For an easy way to group by day, week, month, and more with correct time zones, check out [Groupdate.sql](https://github.com/ankane/groupdate.sql).
+You can have Finery transform specific variables with:
 
-## Standalone Version
-
-Looking for a standalone version? Check out [Ghost Finery](https://github.com/buren/ghost_finery).
+```ruby
+Finery.transform_variable = lambda do |name, value|
+  value = User.generate_email_bidx(value) if name == "email_bidx"
+  value
+end
+```
 
 ## Performance
 
@@ -1056,7 +1028,7 @@ config.cache_store = :mem_cache_store
 
 ## Archiving
 
-Archive queries that haven’t been viewed in over 90 days.
+Archive queries that haven't been viewed in over 90 days.
 
 ```sh
 rake finery:archive_queries
@@ -1070,9 +1042,40 @@ If views are stuck with a `Loading...` message, there might be a problem with st
 override_csp: true
 ```
 
-## Upgrading
+## Learn SQL
 
-Note: Finery started as a fork of Blazer 3.0, so everything before that is strictly Blazer-only.
+Have team members who want to learn SQL? Here are a few great, free resources.
+
+- [The Data School](https://dataschool.com/learn-sql/)
+- [SQLBolt](https://sqlbolt.com/)
+
+## Useful Tools
+
+For an easy way to group by day, week, month, and more with correct time zones, check out [Groupdate.sql](https://github.com/ankane/groupdate.sql).
+
+## Standalone Version
+
+Looking for a standalone version? Check out [Ghost Finery](https://github.com/buren/ghost_finery).
+
+---
+
+## About Finery
+
+### Why is it called Finery?
+
+I've asked ChatGPT for name suggestions for a gem that is a fork of Blazer, but I wasn't happy with any of the results. Then I've asked it how would you call a fancier blazer and it suggested finery (which Merriam-Webster defines as _ornament, decoration, especially: dressy or showy clothing and jewels_). It's simple to type and easy to pronounce.
+
+### Contributing
+
+I'm keeping an eye on the open PRs and new code by @ankane. I plan on keeping the full compatibility with Blazer and if that ever changes I'll announce it with at least a couple months in advance.
+
+That being said I don't mind direct PRs to this repository, I'll try my best to review them as soon as I can. I reserve the right not to merge everything that got submitted to ankane/blazer, but if it gets accepted there I'll merge it here as well (with some possible changes to match Finery's code).
+
+Check out the [dev app](https://github.com/finery-bi/finery-dev) to get started.
+
+## Upgrading from Blazer
+
+Finery started as a fork of Blazer 3.0, so everything before that is strictly Blazer-only.
 
 ### 3.0
 
@@ -1135,11 +1138,9 @@ Demo data from [MovieLens](https://grouplens.org/datasets/movielens/).
 
 ## Want to Make Finery Better?
 
-That’s awesome! Here are a few ways you can help:
+That's awesome! Here are a few ways you can help:
 
 - [Report bugs](https://github.com/finery-bi/finery/issues)
 - Fix bugs and [submit pull requests](https://github.com/finery-bi/finery/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
-
-Check out the [dev app](https://github.com/finery-bi/finery-dev) to get started.
