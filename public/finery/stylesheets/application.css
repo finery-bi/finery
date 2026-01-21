@@ -126,7 +126,8 @@ input.search:focus {
 }
 
 .vars {
-  color: var(--bs-tertiary-color, #adb5bd);
+  color: var(--bs-secondary-color, #6c757d);
+  font-size: 0.875em;
 }
 
 .check-state {
@@ -416,4 +417,509 @@ code {
 .navbar-brand .nav-link {
   font-weight: 600;
   letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   Accessibility Improvements
+   ========================================================================== */
+
+/* Focus visible states for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--bs-primary, #0d6efd);
+  outline-offset: 2px;
+}
+
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-width: 3px;
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb, 13, 110, 253), 0.25);
+}
+
+/* Ensure links have visible focus */
+a:focus-visible {
+  outline: 2px solid var(--bs-primary, #0d6efd);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link for screen readers */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--bs-primary);
+  color: #fff;
+  padding: 8px 16px;
+  z-index: 9999;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Improved disabled state contrast */
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Table Improvements - Sort Indicators
+   ========================================================================== */
+
+.results-table th {
+  cursor: pointer;
+  position: relative;
+  padding-right: 1.5rem;
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+.results-table th:hover {
+  background-color: var(--bs-tertiary-bg, #f8f9fa);
+}
+
+/* Sort indicator arrows */
+.results-table th::after {
+  content: "";
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.3;
+  border: 4px solid transparent;
+  border-top-color: currentColor;
+  margin-top: 2px;
+}
+
+.results-table th::before {
+  content: "";
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.3;
+  border: 4px solid transparent;
+  border-bottom-color: currentColor;
+  margin-top: -6px;
+}
+
+.results-table th.asc::after {
+  opacity: 1;
+}
+
+.results-table th.asc::before {
+  opacity: 0.3;
+}
+
+.results-table th.desc::before {
+  opacity: 1;
+}
+
+.results-table th.desc::after {
+  opacity: 0.3;
+}
+
+/* ==========================================================================
+   Button Standardization
+   ========================================================================== */
+
+/* Primary action buttons - use for main actions like Run, Save */
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: var(--bs-primary);
+  --bs-btn-hover-border-color: var(--bs-primary);
+}
+
+/* Loading state for buttons */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  top: 50%;
+  left: 50%;
+  margin-left: -0.5rem;
+  margin-top: -0.5rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spinner 0.75s linear infinite;
+}
+
+.btn-loading > * {
+  visibility: hidden;
+}
+
+@keyframes btn-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spinner component */
+.spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spinner 0.75s linear infinite;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+.spinner-sm {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-width: 1.5px;
+}
+
+/* ==========================================================================
+   Form Improvements
+   ========================================================================== */
+
+/* Form labels */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+  color: var(--bs-body-color);
+}
+
+/* Required field indicator */
+.form-label.required::after {
+  content: " *";
+  color: var(--bs-danger, #dc3545);
+}
+
+/* Form help text */
+.form-text {
+  font-size: 0.875em;
+  color: var(--bs-secondary-color, #6c757d);
+  margin-top: 0.25rem;
+}
+
+/* Input group improvements */
+.input-group .btn {
+  z-index: 1;
+}
+
+/* Character counter */
+.char-counter {
+  font-size: 0.75rem;
+  color: var(--bs-secondary-color);
+  text-align: right;
+  margin-top: 0.25rem;
+}
+
+.char-counter.warning {
+  color: var(--bs-warning, #ffc107);
+}
+
+.char-counter.danger {
+  color: var(--bs-danger, #dc3545);
+}
+
+/* ==========================================================================
+   Result Count Badge
+   ========================================================================== */
+
+.result-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-secondary-color);
+  padding: 0.25rem 0;
+}
+
+.result-count .badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bs-tertiary-bg) 25%,
+    var(--bs-secondary-bg) 50%,
+    var(--bs-tertiary-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 0.25rem;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text:last-child {
+  width: 60%;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--bs-body-bg-rgb, 255, 255, 255), 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* ==========================================================================
+   Empty States
+   ========================================================================== */
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--bs-secondary-color);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--bs-body-color);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-description {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Status Badges
+   ========================================================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-radius: 0.25rem;
+}
+
+.status-badge-success {
+  background-color: var(--bs-success-bg-subtle, #d1e7dd);
+  color: var(--bs-success-text-emphasis, #0a3622);
+}
+
+.status-badge-danger {
+  background-color: var(--bs-danger-bg-subtle, #f8d7da);
+  color: var(--bs-danger-text-emphasis, #58151c);
+}
+
+.status-badge-warning {
+  background-color: var(--bs-warning-bg-subtle, #fff3cd);
+  color: var(--bs-warning-text-emphasis, #664d03);
+}
+
+.status-badge-info {
+  background-color: var(--bs-info-bg-subtle, #cff4fc);
+  color: var(--bs-info-text-emphasis, #055160);
+}
+
+.status-badge-secondary {
+  background-color: var(--bs-secondary-bg-subtle, #e2e3e5);
+  color: var(--bs-secondary-text-emphasis, #41464b);
+}
+
+/* Status dot indicator */
+.status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot-success {
+  background-color: var(--bs-success, #198754);
+}
+
+.status-dot-danger {
+  background-color: var(--bs-danger, #dc3545);
+}
+
+.status-dot-warning {
+  background-color: var(--bs-warning, #ffc107);
+}
+
+.status-dot-info {
+  background-color: var(--bs-info, #0dcaf0);
+}
+
+/* Pulsing animation for active states */
+.status-dot-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 6px currentColor;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Copy to Clipboard Button
+   ========================================================================== */
+
+.copy-btn {
+  position: relative;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.copy-btn:hover {
+  opacity: 1;
+}
+
+.copy-btn.copied {
+  color: var(--bs-success, #198754);
+}
+
+.copy-btn.copied::after {
+  content: "Copied!";
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bs-dark, #212529);
+  color: #fff;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.625rem;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Responsive Improvements
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+  /* Make tables horizontally scrollable on mobile */
+  .table-responsive-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Adjust editor height on mobile */
+  #editor {
+    height: 120px;
+  }
+
+  /* Stack form elements on mobile */
+  .form-row-mobile-stack {
+    flex-direction: column;
+  }
+
+  .form-row-mobile-stack > * {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Reduce padding on mobile */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* ==========================================================================
+   Transitions & Animations
+   ========================================================================== */
+
+/* Smooth transitions for interactive elements */
+.btn,
+.form-control,
+.form-select,
+.nav-link,
+.dropdown-item,
+.list-group-item {
+  transition: background-color 0.15s ease,
+              border-color 0.15s ease,
+              box-shadow 0.15s ease,
+              color 0.15s ease;
+}
+
+/* Fade in animation */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Slide down animation */
+.slide-down {
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
