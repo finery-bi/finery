@@ -1,16 +1,17 @@
 <% blazer_title "Uploads" %>
 
-<div id="header">
-  <input id="search" type="text" placeholder="Start typing a table or person" style="width: 300px; display: inline-block;" class="search form-control" />
+<div id="header" class="mb-3">
+  <label for="search" class="visually-hidden">Search uploads</label>
+  <input id="search" type="text" placeholder="Search uploads..." class="search form-control d-inline-block" style="max-width: 300px;" aria-label="Search uploads by table or person" />
 </div>
 
-<table id="uploads" class="table">
+<table id="uploads" class="table" role="grid" aria-label="Uploaded data">
   <thead>
     <tr>
-      <th>Table</th>
-      <th style="width: 60%;"></th>
+      <th scope="col">Table</th>
+      <th scope="col" class="w-60">Description</th>
       <% if Blazer.user_class %>
-        <th style="width: 20%; text-align: right;">Mastermind</th>
+        <th scope="col" class="w-20 text-end">Mastermind</th>
       <% end%>
     </tr>
   </thead>
@@ -18,10 +19,20 @@
     <% @uploads.each do |upload| %>
       <tr>
         <td><%= link_to upload.table, edit_upload_path(upload) %></td>
-        <td><%= truncate(upload.description, length: 100, separator: " ") %></td>
+        <td class="text-muted"><%= truncate(upload.description, length: 100, separator: " ") %></td>
         <% if Blazer.user_class %>
           <td class="creator"><%= blazer_user && upload.creator == blazer_user ? "You" : upload.creator.try(Blazer.user_name) %></td>
         <% end %>
+      </tr>
+    <% end %>
+    <% if @uploads.empty? %>
+      <tr>
+        <td colspan="<%= Blazer.user_class ? 3 : 2 %>" class="text-center py-4">
+          <div class="empty-state">
+            <div class="empty-state-title">No uploads yet</div>
+            <div class="empty-state-description">Upload CSV data to query it</div>
+          </div>
+        </td>
       </tr>
     <% end %>
   </tbody>

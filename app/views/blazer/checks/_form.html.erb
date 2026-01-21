@@ -1,4 +1,4 @@
-<%= form_for @check, html: {class: "small-form"} do |f| %>
+<%= form_for @check, html: {class: "small-form", role: "form", "aria-label": "Check form"} do |f| %>
   <% unless @check.respond_to?(:check_type) || @check.respond_to?(:invert) %>
     <p class="text-muted">Checks are designed to identify bad data. A check fails if there are any results.</p>
   <% end %>
@@ -8,7 +8,7 @@
   <% end %>
 
   <div class="form-group mb-3">
-    <%= f.label :query_id, "Query" %>
+    <%= f.label :query_id, "Query", class: "form-label" %>
     <div class="hide">
       <%= f.select :query_id, [], {include_blank: true} %>
     </div>
@@ -22,7 +22,7 @@
 
   <% if @check.respond_to?(:check_type) %>
     <div class="form-group mb-3">
-      <%= f.label :check_type, "Alert if" %>
+      <%= f.label :check_type, "Alert if", class: "form-label" %>
       <div class="hide">
         <% check_options = [["Any results (bad data)", "bad_data"], ["No results (missing data)", "missing_data"]] %>
         <% check_options << ["Anomaly (most recent data point)", "anomaly"] if Blazer.anomaly_checks %>
@@ -34,7 +34,7 @@
     </div>
   <% elsif @check.respond_to?(:invert) %>
     <div class="form-group mb-3">
-      <%= f.label :invert, "Fails if" %>
+      <%= f.label :invert, "Fails if", class: "form-label" %>
       <div class="hide">
         <%= f.select :invert, [["Any results (bad data)", false], ["No results (missing data)", true]] %>
       </div>
@@ -46,7 +46,7 @@
 
   <% if @check.respond_to?(:schedule) && Blazer.check_schedules %>
     <div class="form-group mb-3">
-      <%= f.label :schedule, "Run every" %>
+      <%= f.label :schedule, "Run every", class: "form-label" %>
       <div class="hide">
         <%= f.select :schedule, Blazer.check_schedules.map { |v| [v, v] } %>
       </div>
@@ -57,23 +57,26 @@
   <% end %>
 
   <div class="form-group mb-3">
-    <%= f.label :emails %>
-    <%= f.text_field :emails, placeholder: "Optional, comma separated", class: "form-control" %>
+    <%= f.label :emails, class: "form-label" %>
+    <%= f.text_field :emails, placeholder: "Optional, comma separated", class: "form-control", "aria-describedby": "emails-help" %>
+    <small id="emails-help" class="form-text">Comma separated email addresses</small>
   </div>
 
   <% if Blazer.slack? %>
     <div class="form-group mb-3">
-      <%= f.label :slack_channels %>
-      <%= f.text_field :slack_channels, placeholder: "Optional, comma separated", class: "form-control" %>
+      <%= f.label :slack_channels, class: "form-label" %>
+      <%= f.text_field :slack_channels, placeholder: "Optional, comma separated", class: "form-control", "aria-describedby": "slack-help" %>
+      <small id="slack-help" class="form-text">Comma separated Slack channels</small>
     </div>
   <% end %>
 
-  <p class="text-muted">Emails <%= Blazer.slack? ? "and Slack notifications " : nil %>are sent when a check starts failing, and when it starts passing again.
-  <p>
+  <p class="text-muted small">Emails <%= Blazer.slack? ? "and Slack notifications " : nil %>are sent when a check starts failing, and when it starts passing again.</p>
+
+  <div class="d-flex gap-2">
     <% if @check.persisted? %>
-      <%= link_to "Delete", check_path(@check), method: :delete, "data-confirm" => "Are you sure?", class: "btn btn-danger" %>
+      <%= link_to "Delete", check_path(@check), method: :delete, "data-confirm" => "Are you sure?", class: "btn btn-outline-danger" %>
     <% end %>
-    <%= f.submit "Save", class: "btn btn-success" %>
-    <%= link_to "Back", :back, class: "btn btn-link" %>
-  </p>
+    <%= f.submit "Save", class: "btn btn-primary" %>
+    <%= link_to "Back", :back, class: "btn btn-outline-secondary" %>
+  </div>
 <% end %>
